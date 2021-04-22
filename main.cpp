@@ -90,10 +90,12 @@ void PageReplacement()
     cout << "Press 3 for MRU\n";
     cout << "Press 4 for Optimal\n";
     cout << "Press 5 to exit Scheduling\n";
-    cout << "Enter your choice:\n";
-    cout << "Choice is " << choice << endl;
+
     while (1)
     {
+        cout << "Enter your choice:\n";
+        scanf("%d", &choice);
+        cout << "Choice is " << choice << endl;
 
         switch (choice)
         {
@@ -127,6 +129,7 @@ void PageReplacement()
         default:
             printf("Wrong Input\n");
         }
+        printf("\n\n");
     }
 }
 void DiskScheduling()
@@ -140,16 +143,18 @@ void DiskScheduling()
     cout << "Press 5 for CLOOK\n";
     cout << "Press 6 for SSTF\n";
     cout << "Press 7 to exit Scheduling\n";
-    cout << "Enter your choice:\n";
-    cout << "Choice is " << choice << endl;
+
     while (1)
     {
+        cout << "Enter your choice:\n";
+        scanf("%d", &choice);
+        cout << "Choice is " << choice << endl;
 
         switch (choice)
         {
         case 1:
         {
-            //disk_fifo();
+            disk_fcfs();
             break;
         }
         case 2:
@@ -187,6 +192,7 @@ void DiskScheduling()
         default:
             printf("Wrong Input\n");
         }
+        printf("\n\n");
     }
 }
 

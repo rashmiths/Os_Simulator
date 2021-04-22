@@ -10,3 +10,4 @@ int optimal_pra(void);
 void disk_clook(void);
 void disk_look(void);
 void disk_sstf(void);
+void disk_fcfs(void);
