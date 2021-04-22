@@ -1,328 +1,173 @@
 
 #include <bits/stdc++.h>
+#include <unistd.h>
 #include <pthread.h>
 #include <semaphore.h>
 
 using namespace std;
 
-sem_t s_empty;
+
 sem_t full;
-sem_t wrt;
-int buffersize, curr_time , max_rbt = 0, reader_count = 0;
+sem_t empty;
 pthread_mutex_t mex;
 
-struct process
-{
-    int at, bt, pid;
-} p_w[10], c_r[10];
 
-//function for time delay
-void waitFor(unsigned int secs)
-{
-    unsigned int retTime = time(0) + secs; // Get finishing time.
-    while (time(0) < retTime)
-        ; // Loop until it arrives.
-}
+int buffer[10];
+int counter;
 
-bool proc_sorter(struct process p1, struct process p2)
+void *producer(void *param)
 {
-    return p1.at < p2.at;
-}
-void *producer(void *pno)
-{
-    sem_wait(&s_empty);
+    cout << "Producer " << (*(int *)param) << " is waiting\n";
+    int item = rand() % 10;
 
-    // wait while some other process in in Critical Section
+    sem_wait(&empty);
     pthread_mutex_lock(&mex);
-    //critical section
-    cout << "t = " << curr_time << " : ----->producer " << p_w[*((int *)pno)].pid << " is producing\n";
-    curr_time += p_w[*((int *)pno)].bt;
-
-    //Release locks
+    cout << "Producer " << (*(int *) param) << " produces data : " << item << "\n";
+    buffer[++counter]=item;
+    sleep(2);
+    
     pthread_mutex_unlock(&mex);
     sem_post(&full);
-
     return NULL;
 }
 
-void *consumer(void *cno)
+void *consumer(void *param)
 {
+    cout << "Consumer " << (*(int *)param) << " is waiting\n";
+    
     sem_wait(&full);
-
-    // wait if another process is using critical section
     pthread_mutex_lock(&mex);
-    //critical section
-    cout << "t = " << curr_time << " : ----->consumer " << c_r[*((int *)cno)].pid << " is consuming\n";
-    curr_time += c_r[*((int *)cno)].bt;
 
-    // release the locks
+    cout << "Consumer " << (*(int *) param) << " consumes item : " << buffer[counter--] <<"\n";
+    sleep(1);
     pthread_mutex_unlock(&mex);
-    sem_post(&s_empty);
-
+    sem_post(&empty);   
     return NULL;
 }
 
 void producer_consumer()
 {
-    curr_time = 0;
     pthread_mutex_init(&mex, NULL);
-    int i, n, m, p_i = 0, c_i = 0;
-    cout << "\nEnter buffer size: ";
-    cin >> buffersize;
-    sem_init(&s_empty, 0, buffersize);
-    sem_init(&full, 0, 0);
+    //pthread_mutex_init(&mutex,NULL);
+    sem_init(&full,0,0);
+    sem_init(&empty,0,10);
+    counter=0;
 
-    //accept details about producers
-    cout << "\nEnter number of Producers: ";
-    cin >> n;
-    pthread_t prod_thread[n];
-    for (i = 0; i < n; i++)
-    {
-        cout << "\nEnter arrival time for producer " << i + 1 << " : ";
-        cin >> p_w[i].at;
-        cout << "Enter burst time for producer " << i + 1 << " : ";
-        cin >> p_w[i].bt;
-        p_w[i].pid = i + 1;
-    }
-    sort(p_w, p_w + n, proc_sorter);
+    int i,n_p,n_c;
 
-    //accept details about consumers
-    cout << "\nEnter number of Consumers: ";
-    cin >> m;
-    pthread_t cons_thread[m];
-    for (i = 0; i < m; i++)
-    {
-        cout << "\nEnter arrival time for consumer " << i + 1 << " : ";
-        cin >> c_r[i].at;
-        cout << "Enter burst time for consumer " << i + 1 << " : ";
-        cin >> c_r[i].bt;
-        c_r[i].pid = i + 1;
-    }
-    sort(c_r, c_r + m, proc_sorter);
+    cout << "\nEnter number of producers: ";
+    cin >> n_p;
 
+    cout << "Enter number of consumers: ";
+    cin >> n_c;
+
+    pthread_t producerThread[n_p], consumerThread[n_c];
     cout << "\n";
-    //schedule processes in fcfs manner with priority to producers
-    int lpi, lci;
-    while (p_i < n && c_i < m)
-    {
-        lpi = 0;
-        lci = 0;
-        if (p_w[p_i].at <= c_r[c_i].at)
-        {
-            if (curr_time < p_w[p_i].at)
-                curr_time = p_w[p_i].at;
-            pthread_create(&prod_thread[p_w[p_i].pid - 1], NULL, &producer, (void *)&(p_w[p_i]));
-            waitFor(1);
-            //processes that wait
-            while (lpi < n && lci < m)
-            {
-                if (p_w[lpi].at < curr_time && p_w[lpi].at >= curr_time - p_w[p_i].bt && lpi != p_i)
-                    cout << "t = " << p_w[lpi].at << " : producer " << p_w[lpi].pid << " is waiting\n";
-                lpi++;
 
-                if (c_r[lci].at < curr_time && c_r[lci].at >= curr_time - p_w[p_i].bt)
-                    cout << "t = " << c_r[lci].at << " : consumer " << c_r[lci].pid << " is waiting\n";
-                lci++;
-            }
-            p_i++;
-        }
-        else
-        {
-            if (curr_time < c_r[c_i].at)
-                curr_time = c_r[c_i].at;
-            pthread_create(&cons_thread[c_r[c_i].pid - 1], NULL, &consumer, (void *)&(c_r[c_i]));
-            waitFor(1);
-            //processes that wait
-            while (lpi < n && lci < m)
-            {
-                if (p_w[lpi].at < curr_time && p_w[lpi].at >= curr_time - c_r[c_i].bt && lci != c_i)
-                    cout << "t = " << p_w[lpi].at << " : producer " << p_w[lpi].pid << " is waiting\n";
-                lpi++;
+    int index[10];
+    for(i=0; i<10; i++)
+        index[i] = i+1;
 
-                if (c_r[lci].at < curr_time && c_r[lci].at >= curr_time - c_r[c_i].bt)
-                    cout << "t = " << c_r[lci].at << " : consumer " << c_r[lci].pid << " is waiting\n";
-                lci++;
-            }
-            c_i++;
-        }
-    }
-    //remaining producers
-    while (p_i < n)
-    {
-        if (curr_time < p_w[p_i].at)
-            curr_time = p_w[p_i].at;
-        pthread_create(&prod_thread[p_w[p_i].pid - 1], NULL, &producer, (void *)&(p_w[p_i]));
-        p_i++;
-        waitFor(1);
-    }
-    //remaining consumers
-    while (c_i < m)
-    {
-        if (curr_time < c_r[c_i].at)
-            curr_time = c_r[c_i].at;
-        pthread_create(&cons_thread[c_r[c_i].pid - 1], NULL, &consumer, (void *)&(c_r[c_i]));
-        c_i++;
-        waitFor(1);
-    }
-    //join all threads
-    for (int i = 0; i < n; i++)
-    {
-        pthread_join(prod_thread[i], NULL);
-    }
-    for (int i = 0; i < m; i++)
-    {
-        pthread_join(cons_thread[i], NULL);
-    }
+    for(i=0;i<n_c;i++)
+        pthread_create(&consumerThread[i],NULL,consumer,&index[i]);
 
-    cout << "t = " << curr_time << " : all processes completed.\n\n";
-    pthread_mutex_destroy(&mex);
-    sem_destroy(&s_empty);
-    sem_destroy(&full);
+    for(i=0;i<n_p;i++)
+        pthread_create(&producerThread[i],NULL,producer,&index[i]);
+    
+    
+    
+    for(i=0;i<n_p;i++)
+        pthread_join(producerThread[i],NULL);
+    
+    for(i=0;i<n_c;i++)
+        pthread_join(consumerThread[i],NULL);
+    
     return;
 }
 
-void *writer(void *wno)
+sem_t wrt;
+int val = 1, readerCount;
+
+
+
+
+void *writer(void *param)
 {
-
+    cout << "Writer " << (*(int *)param) << " is waiting\n";
     sem_wait(&wrt);
-
-    //critical section
-    cout << "t = " << curr_time << " : ----->writer " << c_r[*((int *)wno)].pid << " is writing\n";
-    curr_time += c_r[*((int *)wno)].bt;
+    val = rand()%10;
+    cout << "Writer " << (*(int *) param) << " writes data : " << val << "\n";
+    sleep(2);
 
     sem_post(&wrt);
     return NULL;
 }
 
-void *reader(void *rno)
+void *reader(void *param)
 {
-    // wait if another process is using critical section
+    cout << "Reader " << (*(int *)param) << " is waiting\n";
     pthread_mutex_lock(&mex);
-    reader_count++;
+    readerCount++;
     //if its the first reader, lock semaphore so writer cant write
-    if (reader_count == 1)
+    if(readerCount==1)
+    {
         sem_wait(&wrt);
+    }
     pthread_mutex_unlock(&mex);
-    //critical section
-    cout << "t = " << curr_time << " : ----->reader " << p_w[*((int *)rno)].pid << " is reading\n";
-    max_rbt = p_w[*((int *)rno)].bt > max_rbt ? c_r[*((int *)rno)].bt : max_rbt;
-    waitFor(0.5);
+    cout << "Reader " << (*(int *) param) << " reads data : " << val << "\n";
+    sleep(5);
 
     pthread_mutex_lock(&mex);
-    reader_count--;
+    readerCount--;
     //if its the last reader then increment the time and let writer write
-    if (reader_count == 0)
+    if(readerCount==0)
     {
-        curr_time += max_rbt;
-        max_rbt = 0;
         sem_post(&wrt);
     }
-    // release the lock on mutex
     pthread_mutex_unlock(&mex);
+
     return NULL;
 }
 
 void reader_writer()
 {
-    curr_time = 0;
-
+    readerCount = 0;
     pthread_mutex_init(&mex, NULL);
     sem_init(&wrt,0,1);
-    int i, n, m, w_i = 0, r_i = 0;
-    //accepting details about writers
-    cout << "\nEnter number of Writers: ";
-    cin >> n;
-    pthread_t write_thread[n];
-    for (i = 0; i < n; i++)
-    {
-        cout << "\nEnter arrival time for writer " << i + 1 << " : ";
-        cin >> p_w[i].at;
-        cout << "Enter burst time for writer " << i + 1 << " : ";
-        cin >> p_w[i].bt;
-        p_w[i].pid = i + 1;
-    }
-    sort(p_w, p_w + n, proc_sorter);
-    //accept details about readers
-    printf("\nEnter number of Readers: ");
-    cin >> m;
-    pthread_t read_thread[m];
-    for (i = 0; i < m; i++)
-    {
-        cout << "\nEnter arrival time for reader " << i + 1 << " : ";
-        cin >> c_r[i].at;
-        cout << "Enter burst time for reader " << i + 1 << " : ";
-        cin >> c_r[i].bt;
-        c_r[i].pid = i + 1;
-    }
-    sort(c_r, c_r + m, proc_sorter);
+
+
+    int n_r, n_w, i;
+
+    cout << "Enter number of readers: ";
+    cin >> n_r;
+    cout << "Enter number of writers: ";
+    cin >> n_w;
     cout << "\n";
-    //schedule processes using fcfs, with priority to writer
-    int lwi, lri;
-    while (w_i < n && r_i < m)
-    {
-        lwi = 0;
-        lri = 0;
-        if (p_w[w_i].at <= c_r[r_i].at)
-        {
-            cout <<"entered\n";
-            if (curr_time < p_w[w_i].at)
-                curr_time = p_w[w_i].at;
-            cout << "writer " << p_w[w_i].pid << "\n";
-            pthread_create(&write_thread[p_w[w_i].pid - 1], NULL, &writer, (void *)&(p_w[w_i]));
-            waitFor(1);
-            //print all the waiting processes
-            while (lwi < n && lri < m)
-            {
-                if (p_w[lwi].at < curr_time && p_w[lwi].at >= curr_time - p_w[w_i].bt && lwi != w_i)
-                    cout << "t = " << p_w[lwi].at << " : writer " << p_w[lwi].pid << " is waiting\n";
-                lwi++;
 
-                if (c_r[lri].at < curr_time && c_r[lri].at >= curr_time - p_w[w_i].bt)
-                    cout << "t = " << c_r[lri].at << " : reader " << c_r[lri].pid << " is waiting\n";
-                lri++;
-            }
-            w_i++;
-        }
-        else
-        {
-            //accept all readers that have arrived
-            while (c_r[r_i].at <= curr_time && r_i < m)
-            {
-                pthread_create(&read_thread[c_r[r_i].pid - 1], NULL, &reader, (void *)&(c_r[r_i]));
-                r_i++;
-            }
-            waitFor(1);
-        }
-    }
-    //remaining writers
-    while (w_i < n)
+    pthread_t readerThread[n_r],writerThread[n_w];
+
+    int index[20];
+    for(i=0; i<20; i++)
+        index[i] = i+1;
+
+    for(i=0;i<n_w;i++)
+        pthread_create(&writerThread[i],NULL,writer,&index[i]);
+
+    for(i=0;i<n_r;i++)
+        pthread_create(&readerThread[i],NULL,reader, &index[i]);
+
+
+    for(i=0;i<n_w;i++)
     {
-        if (curr_time < p_w[w_i].at)
-            curr_time = p_w[w_i].at;
-        pthread_create(&write_thread[p_w[w_i].pid - 1], NULL, &writer, (void *)&(p_w[w_i]));
-        w_i++;
-        waitFor(1);
+        pthread_join(writerThread[i],NULL);
     }
-    //remaining readers
-    while (r_i < m)
+    for(i=0;i<n_r;i++)
     {
-        if (curr_time < c_r[r_i].at)
-            curr_time = c_r[r_i].at;
-        pthread_create(&read_thread[c_r[r_i].pid - 1], NULL, &reader, (void *)&(c_r[r_i]));
-        r_i++;
-    }
-    //join all threads
-    for (int i = 0; i < n; i++)
-    {
-        pthread_join(write_thread[i], NULL);
-    }
-    for (int i = 0; i < m; i++)
-    {
-        pthread_join(read_thread[i], NULL);
+        pthread_join(readerThread[i],NULL);
     }
 
-    cout << "t = " << curr_time << " : all processes completed.\n\n";
     pthread_mutex_destroy(&mex);
-    sem_destroy(&full);
-    return ;
+    sem_destroy(&wrt);
+
+    return;
 }
