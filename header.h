@@ -17,3 +17,5 @@ void MFTworstfit(void);
 void MVTfirstfit(void);
 void MVTbestfit(void);
 void MVTworstfit(void);
+void reader_writer(void);
+void producer_consumer(void);
