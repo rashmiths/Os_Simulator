@@ -3,6 +3,8 @@
 // #include "page_replacement.cpp"
 // #include "disk_scheduling.cpp"
 #include "header.h"
+//#include <pthread.h>
+//#include <semaphore.h>
 using namespace std;
 
 void Scheduling()
@@ -671,6 +673,39 @@ void MemoryManagement()
     }
 }
 
+void Synchronization()
+{
+    int ch;
+    cout << "\n------------------SYNCHRONIZATION--------------------\n\n";
+    while (1)
+    {
+        cout << "\t1. Producer Consumer Problem\n";
+        cout << "\t2. Readers Writers Problem\n";
+        cout << "\t3. Exit Synchronization\n";
+        cout << "Enter your choice: ";
+        cin >> ch;
+
+        switch (ch)
+        {
+        case 1:
+            producer_consumer();
+            break;
+
+        case 2:
+            reader_writer();
+            break;
+
+        case 3:
+            cout << "Exiting Synchronization...";
+            return;
+
+        default:
+            printf("Wrong Input\n");
+        }
+    }
+}
+
+
 // Function to display the menu
 void menu()
 {
@@ -687,6 +722,7 @@ void menu()
     cout << "-------------------------------\n";
 }
 
+
 // Function to calculate and display the result
 void result(int choice)
 {
@@ -701,7 +737,7 @@ void result(int choice)
     }
     case 2:
     {
-        // Synchronization();
+        Synchronization();
         break;
     }
     case 3:
