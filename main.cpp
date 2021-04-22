@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include "scheduling.cpp"
 #include "page_replacement.cpp"
+#include "disk_scheduling.cpp"
 using namespace std;
 
 
@@ -105,7 +106,7 @@ void PageReplacement()
         }
         case 3:
         {
-          //  mru_pra();
+            mru_pra();
             break;
         }
         case 4:
@@ -116,6 +117,66 @@ void PageReplacement()
         case 5:
         {
             cout << "Bye From PageReplacement";
+            return;
+            
+            break;
+        }        
+        default:
+            printf("Wrong Input\n");
+        }
+    }
+}
+void PageReplacement()
+{
+    
+    int choice;
+    cout << "Press 1 for FIFO\n";
+    cout << "Press 2 for SCAN\n";
+    cout << "Press 3 for CSCAN\n";
+    cout << "Press 4 for LOOK\n";  
+    cout << "Press 5 for CLOOK\n";
+    cout << "Press 6 for SSTF\n";  
+    cout << "Press 7 to exit Scheduling\n";
+    cout << "Enter your choice:\n";
+    cout << "Choice is " << choice << endl;
+    while (1)
+    {
+
+        switch (choice)
+        {
+        case 1:
+        {
+            //disk_fifo();
+            break;
+        }
+        case 2:
+        {
+            //disk_scan();
+            break;
+        }
+        case 3:
+        {
+          //  disk_cscan();
+            break;
+        }
+        case 4:
+        {
+           disk_look();
+            break;
+        }
+         case 5:
+        {
+           disk_clook();
+            break;
+        }
+         case 6:
+        {
+           disk_sstf();
+            break;
+        }
+        case 7:
+        {
+            cout << "Bye From Disk Scheduling";
             return;
             
             break;
