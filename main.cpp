@@ -7,23 +7,27 @@ using namespace std;
 
 void Scheduling()
 {
-
     int choice;
-    cout << "Press 1 for FCFS\n";
-    cout << "Press 2 for SJF\n";
-    cout << "Press 3 for RoundRobin\n";
-    cout << "Press 4 for Priority\n";
-    cout << "Press 5 for SRTF\n";
-    cout << "Press 6 for LJF\n";
-    cout << "Press 7 for LRTF\n";
-    cout << "Press 8 for HRRN\n";
-    cout << "Press 9 to exit Scheduling\n";
 
     while (1)
     {
-        cout << "Enter your choice: ";
+        cout << "-------------------------------\n";
+        cout << "Scheduling Algorithms\n";
+        cout << "\t1. FCFS\n";
+        cout << "\t2. SJF\n";
+        cout << "\t3. RoundRobin\n";
+        cout << "\t4. Priority\n";
+        cout << "\t5. SRTF\n";
+        cout << "\t6. LJF\n";
+        cout << "\t7. LRTF\n";
+        cout << "\t8. HRRN\n";
+        cout << "\t9. Exit Scheduling\n";
+        cout << "-------------------------------\n";
+
+        cout << "\nEnter your choice: ";
         scanf("%d", &choice);
-        cout << "Choice is " << choice << endl;
+        cout << "\n";
+        // cout << "Choice Selected: " << choice << endl;
 
         switch (choice)
         {
@@ -70,7 +74,9 @@ void Scheduling()
         }
         case 9:
         {
-            cout << "\n\nBye From Scheduling\n\n";
+            cout << "______________________________________________________________\n";
+            cout << "\nExit Scheduling........\n";
+            cout << "______________________________________________________________\n\n";
             return;
             break;
         }
@@ -85,17 +91,23 @@ void PageReplacement()
 {
 
     int choice;
-    cout << "Press 1 for FCFS\n";
-    cout << "Press 2 for LRU\n";
-    cout << "Press 3 for MRU\n";
-    cout << "Press 4 for Optimal\n";
-    cout << "Press 5 to exit Scheduling\n";
+
 
     while (1)
     {
-        cout << "Enter your choice:\n";
+        cout << "-------------------------------\n";
+        cout << "Page Replacement Algorithms\n";
+        cout << "\t1. FCFS\n";
+        cout << "\t2. LRU\n";
+        cout << "\t3. MRU\n";
+        cout << "\t4. Optimal\n";
+        cout << "\t5. Exit Page Replacement\n";
+        cout << "-------------------------------\n";
+        
+        cout << "\nEnter your choice: ";
         scanf("%d", &choice);
-        cout << "Choice is " << choice << endl;
+        cout << "\n";
+        // cout << "Choice is " << choice << endl;
 
         switch (choice)
         {
@@ -121,7 +133,9 @@ void PageReplacement()
         }
         case 5:
         {
-            cout << "Bye From PageReplacement";
+            cout << "______________________________________________________________\n\n";
+            cout << "Exit Page Replacement........\n";
+            cout << "______________________________________________________________\n\n";
             return;
 
             break;
@@ -136,19 +150,22 @@ void DiskScheduling()
 {
 
     int choice;
-    cout << "Press 1 for FIFO\n";
-    cout << "Press 2 for SCAN\n";
-    cout << "Press 3 for CSCAN\n";
-    cout << "Press 4 for LOOK\n";
-    cout << "Press 5 for CLOOK\n";
-    cout << "Press 6 for SSTF\n";
-    cout << "Press 7 to exit Scheduling\n";
+    cout << "-------------------------------\n";
+    cout << "Disk Scheduling\n";
+    cout << "\t1. FIFO\n";
+    cout << "\t2. SCAN\n";
+    cout << "\t3. CSCAN\n";
+    cout << "\t4. LOOK\n";
+    cout << "\t5. CLOOK\n";
+    cout << "\t6. SSTF\n";
+    cout << "\t7. Exit Disk Scheduling\n";
+    cout << "-------------------------------\n";
 
     while (1)
     {
-        cout << "Enter your choice:\n";
+        cout << "\nEnter your choice:\n";
         scanf("%d", &choice);
-        cout << "Choice is " << choice << endl;
+        cout << "\n";
 
         switch (choice)
         {
@@ -1487,14 +1504,17 @@ void MemoryManagement()
 // Function to display the menu
 void menu()
 {
-    cout << "\n     Main Menu       \n";
-    cout << "Press 1 for Scheduling algorithms\n";
-    cout << "Press 2 for Synchronization algoritms\n";
-    cout << "Press 3 for Bankers algorithm\n";
-    cout << "Press 4 for Memory Management\n";
-    cout << "Press 5 for Page Replacement algorihm\n";
-    cout << "Press 6 for Disc Scheduling Algorithm\n";
-    cout << "Press 7 to exit\n";
+    cout << "\n-------------------------------\n";
+    cout << "\tMain Menu\n";
+    cout << "-------------------------------\n";
+    cout << "1. Scheduling algorithms\n";
+    cout << "2. Synchronization algoritms\n";
+    cout << "3. Bankers algorithm\n";
+    cout << "4. Memory Management\n";
+    cout << "5. Page Replacement algorihm\n";
+    cout << "6. Disc Scheduling Algorithm\n";
+    cout << "7. exit\n";
+    cout << "-------------------------------\n";
 }
 
 // Function to calculate and display the result
@@ -1536,7 +1556,10 @@ void result(int choice)
     }
     case 7:
     {
-        cout << "Thank you\n";
+        cout << "______________________________________________________________\n";
+        cout << "\nThank you......\n";
+        cout << "______________________________________________________________\n\n";
+        exit(0);
         break;
     }
     default:
@@ -1549,15 +1572,15 @@ int main()
 
     int choice, res;
 
-    // Display the menu
-
     while (1)
     {
+        // Display the menu
         menu();
         // Enter the choice
-        cout << "Enter your choice:\n";
+        cout << "\nEnter your choice: ";
         scanf("%d", &choice);
-        cout << "Choice is " << choice << endl;
+        cout << "\n";
+        // cout << "Choice Selected: " << choice << "\n\n";
 
         // Display the result
         // according to the choice
