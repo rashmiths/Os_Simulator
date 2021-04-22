@@ -130,31 +130,26 @@ void disk_sstf()
 }
 void disk_fcfs()
 {
-	int n, h;
-	vector<int> track(n);
-	cout << "Enter total tracks:";
-	cin >> n;
-	cout << "Enter requested track position:" << endl;
-	for (int i = 0; i < n; i++)
+	int queue[20], n, head, i, j, k, seek = 0, max, diff;
+	float avg;
+	printf("Enter the max range of disk\n");
+	scanf("%d", &max);
+	printf("Enter the size of queue request\n");
+	scanf("%d", &n);
+	printf("Enter the queue of disk positions to be read\n");
+	for (i = 1; i <= n; i++)
+		scanf("%d", &queue[i]);
+	printf("Enter the initial head position\n");
+	scanf("%d", &head);
+	queue[0] = head;
+	for (j = 0; j <= n - 1; j++)
 	{
-		cout << "\t" << i + 1 << ":";
-		cin >> track[i];
+		diff = abs(queue[j + 1] - queue[j]);
+		seek += diff;
+		printf("Disk head moves from %d to %d with seek                                                                                       %d\n", queue[j], queue[j + 1], diff);
 	}
-	cout << "Enter initial head position:";
-	cin >> h;
-	int seek_time = 0;
-	vector<int> seek_sequence;
-	for (int i = 0; i < n; i++)
-	{
-		seek_time += abs(track[i] - h);
-		h = track[i];
-		seek_sequence.push_back(track[i]);
-	}
-	cout << "Final output:" << endl;
-	cout << "Total seek time = " << seek_time << endl;
-	cout << "Seek sequence is: ";
-	for (int i = 0; i < n; i++)
-	{
-		cout << seek_sequence[i] << " ";
-	}
+	printf("Total seek time is %d\n", seek);
+	avg = seek / (float)n;
+	printf("Average seek time is %f\n", avg);
+	return;
 }
