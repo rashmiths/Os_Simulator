@@ -13,7 +13,7 @@ pthread_mutex_t mex;
 
 
 int buffer[10];
-int counter;
+int n;
 
 void *producer(void *param)
 {
@@ -23,7 +23,7 @@ void *producer(void *param)
     sem_wait(&empty);
     pthread_mutex_lock(&mex);
     cout << "Producer " << (*(int *) param) << " produces data : " << item << "\n";
-    buffer[++counter]=item;
+    buffer[++n]=item;
     sleep(2);
     
     pthread_mutex_unlock(&mex);
@@ -38,7 +38,7 @@ void *consumer(void *param)
     sem_wait(&full);
     pthread_mutex_lock(&mex);
 
-    cout << "Consumer " << (*(int *) param) << " consumes item : " << buffer[counter--] <<"\n";
+    cout << "Consumer " << (*(int *) param) << " consumes item : " << buffer[n--] <<"\n";
     sleep(1);
     pthread_mutex_unlock(&mex);
     sem_post(&empty);   
@@ -51,7 +51,7 @@ void producer_consumer()
     //pthread_mutex_init(&mutex,NULL);
     sem_init(&full,0,0);
     sem_init(&empty,0,10);
-    counter=0;
+    n = 0;
 
     int i,n_p,n_c;
 
@@ -170,4 +170,55 @@ void reader_writer()
     sem_destroy(&wrt);
 
     return;
+}
+
+//dining philo
+
+sem_t allowed;
+sem_t chopstick[10];
+
+void * tryEat(void * num)
+{
+    int phil = *(int *)num;
+    printf("\nPhilosopher %d is hungry", phil);
+    sem_wait(&allowed);    
+    sem_wait(&chopstick[phil]);
+    printf("\nPhilosopher %d picked up chopstick %d", phil, phil);
+    sem_wait(&chopstick[(phil+1)%n]);
+    printf("\nPhilosopher %d picked up chopstick %d" , phil, (phil+1)%n);
+
+    printf("\n->Philosopher %d is eating", phil);
+
+    sleep(2);
+    printf("\nPhilosopher %d is thinking", phil);
+
+    sem_post(&chopstick[(phil+1)%5]);
+    sem_post(&chopstick[phil]);
+    sem_post(&allowed);
+    return NULL;
+}
+
+void dining_philosopher()
+{
+    cout << "\nEnter number of philosophers : ";
+    cin >> n;
+    int i, index[n];
+    pthread_t tid[n];
+
+    sem_init(&allowed,0,n-1);
+
+    for(i=0;i<n;i++)
+        sem_init(&chopstick[i],0,1);
+    cout << "\nAll philosophers are thinking";
+    for(i=0;i<n;i++){
+        index[i] = i;
+        pthread_create(&tid[i],NULL, tryEat,(void *)&index[i]);
+    }
+    for(i=0;i<n;i++)
+        pthread_join(tid[i],NULL);
+    cout << "\n";
+
+    for(i=0;i<n;i++)
+        sem_destroy(&chopstick[i]);
+    sem_destroy(&allowed);
 }

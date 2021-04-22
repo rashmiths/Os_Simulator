@@ -20,3 +20,4 @@ void MVTworstfit(void);
 void BankersAlgo(void);
 void reader_writer(void);
 void producer_consumer(void);
+void dining_philosopher(void);

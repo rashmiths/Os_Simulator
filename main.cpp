@@ -480,12 +480,16 @@ void MemoryManagement()
 void Synchronization()
 {
     int ch;
-    cout << "\n------------------SYNCHRONIZATION--------------------\n\n";
+    cout << "\n-------------------------------\n";
+    cout << "Synchronization\n";
+    cout << "-------------------------------\n";
     while (1)
     {
-        cout << "\t1. Producer Consumer Problem\n";
-        cout << "\t2. Readers Writers Problem\n";
-        cout << "\t3. Exit Synchronization\n";
+        cout << "1. Producer Consumer Problem\n";
+        cout << "2. Readers Writers Problem\n";
+        cout << "3. Dining Philosophers Problem\n";
+        cout << "4. Exit Synchronization\n";
+        cout << "-------------------------------\n";
         cout << "Enter your choice: ";
         cin >> ch;
 
@@ -499,8 +503,11 @@ void Synchronization()
             reader_writer();
             break;
 
-        case 3:
-            cout << "Exiting Synchronization...";
+            case 3:
+            dining_philosopher();
+
+        case 4:
+            cout << "Exiting Synchronization...\n";
             return;
 
         default:
