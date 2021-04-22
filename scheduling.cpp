@@ -358,7 +358,6 @@ void LJF()
             sumwt+=arr[i].wt;
         }
 
-        cout<<"The table is as follows: (its shown according to the process that happens first) "<<endl;
         cout<<"PID\tAT\tBT\tCT\tTAT\tWT"<<endl;
         for(i=0;i<n;i++)
         {
