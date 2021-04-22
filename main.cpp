@@ -27,48 +27,56 @@ void Scheduling()
         cout << "\nEnter your choice: ";
         scanf("%d", &choice);
         cout << "\n";
-        // cout << "Choice Selected: " << choice << endl;
-
+        if( choice != 9 )
+            cout << "-------------------------------\n";
         switch (choice)
         {
         case 1:
-        {
+        {   
+            cout << "FCFS\n";
             fcfs();
             break;
         }
         case 2:
         {
+            cout << "SJF\n";
             sjf();
             break;
         }
         case 3:
         {
+            cout << "RR (Round Robin)\n";
             roundRobin();
             break;
         }
         case 4:
         {
+            cout << "Priority\n";
             //Priority();
             break;
         }
         case 5:
         {
+            cout << "SRTF\n";
             // SRTF();
             break;
         }
         case 6:
         {
+            cout << "LJF\n";
             LJF();
             break;
         }
         case 7:
         {
+            cout << "LRTF\n";
             LRTF();
 
             break;
         }
         case 8:
         {
+            cout << "HRRN\n";
             //HRRN();
             break;
         }
@@ -1434,31 +1442,55 @@ void MVTworstfit()
 void MemoryManagement()
 {
     int a, b;
-    cout << "Enter 1 if you want to do fixed partion " << endl;
-    cout << "Enter 2 if you want to do variable partitiion " << endl;
+    cout << "-------------------------------\n";
+    cout << "Memory Management\n";
+    cout << "\t1. Fixed Partition " << endl;
+    cout << "\t2. Variable Partitiion " << endl;
+    cout << "-------------------------------\n";
+    cout << "\nEnter Choice: ";
     cin >> a;
+    cout << "\n";
     if (a == 1)
     {
-        cout << "Enter the algo you want to perform for fixed partition: " << endl;
-        cout << "1. First Fit " << endl;
-        cout << "2. Best Fit " << endl;
-        cout << "3. Worst Fit " << endl;
+        cout << "-------------------------------\n";
+        cout << "Fixed partition: " << endl;
+        cout << "\t1. First Fit " << endl;
+        cout << "\t2. Best Fit " << endl;
+        cout << "\t3. Worst Fit " << endl;
+        cout << "\t4. Exit Memory Management" << endl; 
+        cout << "-------------------------------\n";
+        cout << "Enter Choice: ";
         cin >> b;
+        cout << "\n";
         switch (b)
         {
         case 1:
         {
+            cout << "-------------------------------\n";
+            cout << "First Fit\n";
             MFTfirstfit();
             break;
         }
         case 2:
         {
+            cout << "-------------------------------\n";
+            cout << "Best Fit\n";
             MFTbestfit();
             break;
         }
         case 3:
         {
+            cout << "-------------------------------\n";
+            cout << "Worst Fit\n";
             MFTworstfit();
+            break;
+        }
+        case 4:
+        {
+            cout << "______________________________________________________________\n";
+            cout << "\nExit Memory Management........\n";
+            cout << "______________________________________________________________\n\n";
+            return ;
             break;
         }
         default:
@@ -1470,26 +1502,45 @@ void MemoryManagement()
     }
     else
     {
-        cout << "Enter the algo you want to perform for variable partition: " << endl;
-        cout << "1. First Fit " << endl;
-        cout << "2. Best Fit " << endl;
-        cout << "3. Worst Fit " << endl;
+        cout << "-------------------------------\n";
+        cout << "Variable Partition: " << endl;
+        cout << "\t1. First Fit " << endl;
+        cout << "\t2. Best Fit " << endl;
+        cout << "\t3. Worst Fit " << endl;
+        cout << "\t4. Exit Memory Management" << endl;
+        cout << "-------------------------------\n";
+        cout << "Enter Choice: ";
         cin >> b;
+        cout << "\n";
         switch (b)
         {
         case 1:
-        {
+        {   
+            cout << "-------------------------------\n";
+            cout << "First Fit\n";
             MVTfirstfit();
             break;
         }
         case 2:
         {
+            cout << "-------------------------------\n";
+            cout << "Best Fit\n";
             MVTbestfit();
             break;
         }
         case 3:
         {
+            cout << "-------------------------------\n";
+            cout << "Worst Fit\n";
             MVTworstfit();
+            break;
+        }
+        case 4:
+        {
+            cout << "______________________________________________________________\n";
+            cout << "\nExit Memory Management........\n";
+            cout << "______________________________________________________________\n\n";
+            return ;
             break;
         }
         default:
