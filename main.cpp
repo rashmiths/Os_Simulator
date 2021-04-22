@@ -14,8 +14,9 @@ void Scheduling()
     cout << "Press 4 for Priority\n";
     cout << "Press 5 for SRTF\n";
     cout << "Press 6 for LJF\n";
-    cout << "Press 7 to LRTF\n";
-    cout << "Press 8 to exit Scheduling\n";
+    cout << "Press 7 for LRTF\n";
+    cout<< "Press 8 for HRRN\n"; 
+    cout << "Press 9 to exit Scheduling\n";
     cout << "Enter your choice:\n";
     cout << "Choice is " << choice << endl;
     while (1)
@@ -50,16 +51,21 @@ void Scheduling()
         }
         case 6:
         {
-            //    LJF();
+            LJF();
             break;
         }
         case 7:
         {
-            //LRTF();
+            LRTF();
 
             break;
         }
-        case 8:
+	case 8:
+	{
+		//HRRN();
+		break;
+	}
+        case 9:
         {
             cout << "Bye From Scheduling";
             return;
@@ -70,6 +76,7 @@ void Scheduling()
         }
     }
 }
+
 void PageReplacement()
 {
     
@@ -405,9 +412,6 @@ while(loop==1) {
             cout<<i<<" - "<<frames[0][i]<<endl;
         }
 }
-
-#include <bits/stdc++.h>
-using namespace std;
 
 void MFTfirstfit()
 {
