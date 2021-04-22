@@ -1399,7 +1399,7 @@ void menu()
     cout << "Press 1 for Scheduling algorithms\n";
     cout << "Press 2 for Synchronization algoritms\n";
     cout << "Press 3 for Bankers algorithm\n";
-    cout << "Press 4 for Paging algorithm\n";
+    cout << "Press 4 for Memory Management\n";
     cout << "Press 5 for Page Replacement algorihm\n";
     cout << "Press 6 for Disc Scheduling Algorithm\n";
     cout << "Press 7 to exit\n";
@@ -1424,7 +1424,7 @@ void result(int choice, int a, int b)
         break;
     }
     case 4: {
-        // Paging();
+        MemoryManagement();
         break;
     }
     case 5: {
