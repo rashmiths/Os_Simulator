@@ -181,6 +181,104 @@ int lru_pra()
     return 0;
 }
 
+int mru_pra()
+{
+    vector<int> input;
+    vector<int> frame;
+
+    int num_frm = 0, pg;
+    int page_faults = 0;
+    int flag = 0, i, k, choice;
+    int lru;
+
+    cout << "Page Replacement - LRU\n\nEnter the number of frames: ";
+    cin >> num_frm;
+
+    choice = 1;
+    i = 0;
+    while (1)
+    {
+
+        cout << "1. Add Page\t2. Exit\nEnter Choice: ";
+        cin >> choice;
+
+        if (choice == 2)
+            break;
+        else if (choice != 1)
+        {
+            cout << "Invalid Choice\n";
+            continue;
+        }
+
+        i++;
+        printf("Enter the Page Number (%d): ", i);
+        cin >> pg;
+        flag = 0;
+        if (frame.size() < num_frm)
+        {
+            for (int j = 0; j < frame.size(); j++)
+            {
+                if (pg == frame[j])
+                {
+                    cout << "Page " << pg << " is already present in F" << j << "\n\n";
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag)
+                continue;
+            cout << "Page " << pg << " has been accomodated in F" << i - 1 << "\n\n";
+            page_faults++;
+            input.push_back(pg);
+            frame.push_back(pg);
+            continue;
+        }
+
+        flag = 0;
+        for (k = 0; k < num_frm; k++)
+        {
+            if (pg == frame[k])
+            {
+
+                cout << "Page " << pg << " is already present in F" << k << "\n\n";
+                for (auto j = input.begin(); j != input.end(); j++)
+                {
+                    if (pg == *j)
+                    {
+                        input.erase(j);
+                        input.push_back(pg);
+                        break;
+                    }
+                }
+
+                flag = 1;
+                break;
+            }
+        }
+        if (flag == 0)
+        {
+            lru = input[num_frm-1];
+
+            for (k = 0; k < num_frm; k++)
+            {
+                if (lru == frame[k])
+                {
+                    break;
+                }
+            }
+            frame[k] = pg;
+            cout << "Page " << pg << " has been accomodated in F" << k << " replacing Page " << lru << "\n\n";
+
+            input.erase(input.begin());
+            input.push_back(pg);
+            page_faults++;
+        }
+    }
+
+    cout << "\nTotal Number of Page Faults: " << page_faults << "\nPage Faults Ratio = " << (float(page_faults) / float(i)) << "\n\n";
+    return 0;
+}
+
 bool search(int key, vector<int> &fr)
 {
     for (int i = 0; i < fr.size(); i++)
