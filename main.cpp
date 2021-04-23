@@ -60,7 +60,7 @@ void Scheduling()
         case 5:
         {
             cout << "SRTF\n";
-            // SRTF();
+            srtf();
             break;
         }
         case 6:
@@ -79,7 +79,7 @@ void Scheduling()
         case 8:
         {
             cout << "HRRN\n";
-            //HRRN();
+            hrrn();
             break;
         }
         case 9:
@@ -186,12 +186,12 @@ void DiskScheduling()
         }
         case 2:
         {
-            //disk_scan();
+            disk_scan();
             break;
         }
         case 3:
         {
-            //  disk_cscan();
+            disk_cscan();
             break;
         }
         case 4:
