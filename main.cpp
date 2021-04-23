@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
 #include "header.h"
+#define CYN "\e[0;96m"
+#define reset "\e[0m"
 
 using namespace std;
 
@@ -484,11 +486,10 @@ void Synchronization()
     {
     	cout << "\n-------------------------------\n";
     	cout << "Synchronization\n";
-    	cout << "-------------------------------\n";
-        cout << "1. Producer Consumer Problem\n";
-        cout << "2. Readers Writers Problem\n";
-        cout << "3. Dining Philosophers Problem\n";
-        cout << "4. Exit Synchronization\n";
+        cout << "\t1. Producer Consumer Problem\n";
+        cout << "\t2. Readers Writers Problem\n";
+        cout << "\t3. Dining Philosophers Problem\n";
+        cout << "\t4. Exit Synchronization\n";
         cout << "-------------------------------\n";
         cout << "Enter your choice: ";
         cin >> ch;
@@ -522,17 +523,17 @@ void Synchronization()
 // Function to display the menu
 void menu()
 {
-    cout << "\n\t-------------------------------\n";
-    cout << "\t\tMain Menu\n";
-    cout << "-\t------------------------------\n";
-    cout << "\t1. Scheduling algorithms\n";
-    cout << "\t2. Synchronization algoritms\n";
-    cout << "\t3. Bankers algorithm\n";
-    cout << "\t4. Memory Management\n";
-    cout << "\t5. Page Replacement algorihm\n";
-    cout << "\t6. Disc Scheduling Algorithm\n";
-    cout << "\t7. exit\n";
-    cout << "\t-------------------------------\n";
+    printf(CYN "\n\t-------------------------------\n" reset);
+    printf(CYN "\t\tMain Menu\n");
+    printf(CYN "\t-------------------------------\n" reset);
+    printf(CYN "\t1. Scheduling algorithms\n" reset);
+    printf(CYN "\t2. Synchronization algoritms\n" reset);
+    printf(CYN "\t3. Bankers algorithm\n" reset);
+    printf(CYN "\t4. Memory Management\n" reset);
+    printf(CYN "\t5. Page Replacement algorihm\n" reset);
+    printf(CYN "\t6. Disc Scheduling Algorithm\n" reset);
+    printf(CYN "\t7. exit\n" reset);
+    printf(CYN "\t-------------------------------\n" reset);
 }
 
 // Function to calculate and display the result
