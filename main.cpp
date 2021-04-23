@@ -159,19 +159,21 @@ void DiskScheduling()
 {
 
     int choice;
-    cout << "-------------------------------\n";
-    cout << "Disk Scheduling\n";
-    cout << "\t1. FIFO\n";
-    cout << "\t2. SCAN\n";
-    cout << "\t3. CSCAN\n";
-    cout << "\t4. LOOK\n";
-    cout << "\t5. CLOOK\n";
-    cout << "\t6. SSTF\n";
-    cout << "\t7. Exit Disk Scheduling\n";
-    cout << "-------------------------------\n";
+    
 
     while (1)
     {
+        cout << "-------------------------------\n";
+        cout << "Disk Scheduling\n";
+        cout << "\t1. FIFO\n";
+        cout << "\t2. SCAN\n";
+        cout << "\t3. CSCAN\n";
+        cout << "\t4. LOOK\n";
+        cout << "\t5. CLOOK\n";
+        cout << "\t6. SSTF\n";
+        cout << "\t7. Exit Disk Scheduling\n";
+        cout << "-------------------------------\n";
+
         cout << "\nEnter your choice:\n";
         scanf("%d", &choice);
         cout << "\n";
@@ -210,7 +212,9 @@ void DiskScheduling()
         }
         case 7:
         {
-            cout << "Bye From Disk Scheduling";
+            cout << "______________________________________________________________\n\n";
+            cout << "Exit Disk Scheduling........\n";
+            cout << "______________________________________________________________\n\n";
             return;
 
             break;
