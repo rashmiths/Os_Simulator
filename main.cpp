@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include "header.h"
 #define CYN "\e[0;96m"
+#define CYNB "\e[1;96m"
 #define reset "\e[0m"
 
 using namespace std;
@@ -12,7 +13,7 @@ void Scheduling()
     while (1)
     {
         cout << "-------------------------------\n";
-        cout << "Scheduling Algorithms\n";
+        printf(CYNB "Scheduling Algorithms\n" reset);
         cout << "\t1. FCFS\n";
         cout << "\t2. SJF\n";
         cout << "\t3. RoundRobin\n";
@@ -89,7 +90,10 @@ void Scheduling()
             break;
         }
         default:
-            printf("Wrong Input\n");
+        {
+            cout << "\033[1;31mWrong Input\033[0m\n";
+            break;
+        }
         }
         printf("\n\n");
     }
@@ -103,7 +107,7 @@ void PageReplacement()
     while (1)
     {
         cout << "-------------------------------\n";
-        cout << "Page Replacement Algorithms\n";
+        printf(CYNB "Page Replacement Algorithms\n" reset);
         cout << "\t1. FCFS\n";
         cout << "\t2. LRU\n";
         cout << "\t3. MRU\n";
@@ -148,7 +152,10 @@ void PageReplacement()
             break;
         }
         default:
-            printf("Wrong Input\n");
+        {
+            cout << "\033[1;31mWrong Input\033[0m\n";
+            break;
+        }
         }
         printf("\n\n");
     }
@@ -161,7 +168,7 @@ void DiskScheduling()
     while (1)
     {
         cout << "-------------------------------\n";
-        cout << "Disk Scheduling\n";
+        printf(CYNB "Disk Scheduling\n" reset);
         cout << "\t1. FIFO\n";
         cout << "\t2. SCAN\n";
         cout << "\t3. CSCAN\n";
@@ -171,7 +178,7 @@ void DiskScheduling()
         cout << "\t7. Exit Disk Scheduling\n";
         cout << "-------------------------------\n";
 
-        cout << "\nEnter your choice:\n";
+        cout << "\nEnter your choice: ";
         scanf("%d", &choice);
         cout << "\n";
 
@@ -217,7 +224,10 @@ void DiskScheduling()
             break;
         }
         default:
-            printf("Wrong Input\n");
+        {
+            cout << "\033[1;31mWrong Input\033[0m\n";
+            break;
+        }
         }
         printf("\n\n");
     }
@@ -369,7 +379,7 @@ void MemoryManagement()
 {
     int a, b;
     cout << "-------------------------------\n";
-    cout << "Memory Management\n";
+    printf(CYNB "Memory Management\n" reset);
     cout << "\t1. Fixed Partition " << endl;
     cout << "\t2. Variable Partitiion " << endl;
     cout << "-------------------------------\n";
@@ -421,7 +431,7 @@ void MemoryManagement()
         }
         default:
         {
-            cout << "Wrong input " << endl;
+            cout << "\033[1;31mWrong Input\033[0m\n";
             break;
         }
         }
@@ -471,7 +481,7 @@ void MemoryManagement()
         }
         default:
         {
-            cout << "Wrong input " << endl;
+            cout << "\033[1;31mWrong Input\033[0m\n";
             break;
         }
         }
@@ -481,11 +491,11 @@ void MemoryManagement()
 void Synchronization()
 {
     int ch;
-    
+
     while (1)
     {
-    	cout << "\n-------------------------------\n";
-    	cout << "Synchronization\n";
+        cout << "\n-------------------------------\n";
+        printf(CYNB "Synchronization\n" reset);
         cout << "\t1. Producer Consumer Problem\n";
         cout << "\t2. Readers Writers Problem\n";
         cout << "\t3. Dining Philosophers Problem\n";
@@ -515,7 +525,8 @@ void Synchronization()
             return;
 
         default:
-            printf("Wrong Input\n");
+            cout << "\033[1;31mWrong Input\033[0m\n";
+            break;
         }
     }
 }
@@ -524,7 +535,7 @@ void Synchronization()
 void menu()
 {
     printf(CYN "\n\t-------------------------------\n" reset);
-    printf(CYN "\t\tMain Menu\n");
+    printf("\t\t\033[1;37mMain Menu\n\033[0m");
     printf(CYN "\t-------------------------------\n" reset);
     printf(CYN "\t1. Scheduling algorithms\n" reset);
     printf(CYN "\t2. Synchronization algoritms\n" reset);
@@ -582,7 +593,10 @@ void result(int choice)
         break;
     }
     default:
-        printf("Wrong Input\n");
+    {
+        cout << "\033[1;31mWrong Input\033[0m\n";
+        break;
+    }
     }
 }
 
