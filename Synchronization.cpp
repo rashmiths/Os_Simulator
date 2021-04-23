@@ -5,8 +5,8 @@
 #include <semaphore.h>
 
 #define GRN "\e[0;92m"
-#define YEL "\e[1;93m"
-#define RED "\e[1;91m"
+#define YEL "\e[0;93m"
+#define RED "\e[0;91m"
 #define reset "\e[0m"
 using namespace std;
 
