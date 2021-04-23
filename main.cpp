@@ -524,7 +524,7 @@ void Synchronization()
 void menu()
 {
     printf(CYN "\n\t-------------------------------\n" reset);
-    printf(CYN "\t\tMain Menu\n");
+    printf("\e[1;96m\t\tMAIN MENU\n");
     printf(CYN "\t-------------------------------\n" reset);
     printf(CYN "\t1. Scheduling algorithms\n" reset);
     printf(CYN "\t2. Synchronization algoritms\n" reset);
