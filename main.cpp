@@ -233,147 +233,147 @@ void DiskScheduling()
     }
 }
 
-void pagingFIFO()
-{
-    int vs;                 //virtual memory size
-    int ps;                 // physical memory size
-    int page;               // page size
-    int nf;                 // number of frames
-    int np;                 // number of pages
-    int pagetable[100];     //page table
-    int frames[2][100];     // frames
-    bool fs[100] = {false}; // checking if frame is empty or not
-    int loop = 1;           // loop variable
-    int pageno;             // page number holder
-    int offset;             // offset holder
-    float pagefaults = 0;   // fault counter
-    int flag = 0;           // flag variable
-    int i;                  //loop variable
-    int index = 0;          // storing index
-    float input = 0;        // input counter;
+// void pagingFIFO()
+// {
+//     int vs;                 //virtual memory size
+//     int ps;                 // physical memory size
+//     int page;               // page size
+//     int nf;                 // number of frames
+//     int np;                 // number of pages
+//     int pagetable[100];     //page table
+//     int frames[2][100];     // frames
+//     bool fs[100] = {false}; // checking if frame is empty or not
+//     int loop = 1;           // loop variable
+//     int pageno;             // page number holder
+//     int offset;             // offset holder
+//     float pagefaults = 0;   // fault counter
+//     int flag = 0;           // flag variable
+//     int i;                  //loop variable
+//     int index = 0;          // storing index
+//     float input = 0;        // input counter;
 
-    cout << "Enter the Virtual/Logical Memory Size: ";
-    cin >> vs;
-    cout << "Enter the Physical Memory Size: ";
-    cin >> ps;
-    cout << "Enter the Size of the page: ";
-    cin >> page;
+//     cout << "Enter the Virtual/Logical Memory Size: ";
+//     cin >> vs;
+//     cout << "Enter the Physical Memory Size: ";
+//     cin >> ps;
+//     cout << "Enter the Size of the page: ";
+//     cin >> page;
 
-    np = vs / page;
-    nf = ps / page;
+//     np = vs / page;
+//     nf = ps / page;
 
-    for (i = 0; i < np; i++)
-    {
-        pagetable[i] = -1;
-    }
+//     for (i = 0; i < np; i++)
+//     {
+//         pagetable[i] = -1;
+//     }
 
-    for (i = 0; i < nf; i++)
-    {
-        frames[0][i] = -1;
-    }
+//     for (i = 0; i < nf; i++)
+//     {
+//         frames[0][i] = -1;
+//     }
 
-    cout << "Number of pages in virtual memory:" << np << endl;
-    cout << "Number of pages in physical memory:" << nf << endl;
+//     cout << "Number of pages in virtual memory:" << np << endl;
+//     cout << "Number of pages in physical memory:" << nf << endl;
 
-    while (loop == 1)
-    {
-        cout << endl;
-        cout << "Press 1 to add a page into a frame" << endl;
-        cout << "Press 2 to stop" << endl;
-        cin >> loop;
-        if (loop != 1)
-            break;
+//     while (loop == 1)
+//     {
+//         cout << endl;
+//         cout << "Press 1 to add a page into a frame" << endl;
+//         cout << "Press 2 to stop" << endl;
+//         cin >> loop;
+//         if (loop != 1)
+//             break;
 
-        cout << "Enter the virtual address as told below:" << endl;
-        ;
-        cout << "Enter the Page number: " << endl;
-        cin >> pageno;
-        if (pageno > np)
-        {
-            cout << "Page can't exist due to Virtual Memory Constraint" << endl;
-            continue;
-        }
+//         cout << "Enter the virtual address as told below:" << endl;
+//         ;
+//         cout << "Enter the Page number: " << endl;
+//         cin >> pageno;
+//         if (pageno > np)
+//         {
+//             cout << "Page can't exist due to Virtual Memory Constraint" << endl;
+//             continue;
+//         }
 
-        cout << "Enter the Offset: ";
-        cin >> offset;
+//         cout << "Enter the Offset: ";
+//         cin >> offset;
 
-        input++;
-        for (i = 0; i < nf; i++)
-        {
-            if (frames[0][i] == pageno)
-            {
-                flag = 1;
-                break;
-            }
-        }
-        if (flag == 1)
-        {
-            cout << endl
-                 << "The Physical Address for the above virtual address is : " << endl;
-            cout << "Frame: " << i << endl;
-            cout << "Offset: " << offset;
-            flag = 0;
-        }
-        else
-        {
-            pagefaults = pagefaults + 1;
+//         input++;
+//         for (i = 0; i < nf; i++)
+//         {
+//             if (frames[0][i] == pageno)
+//             {
+//                 flag = 1;
+//                 break;
+//             }
+//         }
+//         if (flag == 1)
+//         {
+//             cout << endl
+//                  << "The Physical Address for the above virtual address is : " << endl;
+//             cout << "Frame: " << i << endl;
+//             cout << "Offset: " << offset;
+//             flag = 0;
+//         }
+//         else
+//         {
+//             pagefaults = pagefaults + 1;
 
-            if (fs[index] == false)
-            {
-                cout << "Page " << pageno << " is not present in the physical memory so page " << pageno << " is accomodated into frame " << index;
-                frames[0][index] = pageno;
-                frames[1][index] = offset;
-                fs[index] = true;
-                pagetable[pageno] = index;
+//             if (fs[index] == false)
+//             {
+//                 cout << "Page " << pageno << " is not present in the physical memory so page " << pageno << " is accomodated into frame " << index;
+//                 frames[0][index] = pageno;
+//                 frames[1][index] = offset;
+//                 fs[index] = true;
+//                 pagetable[pageno] = index;
 
-                index++;
-            }
+//                 index++;
+//             }
 
-            else
-            {
-                cout << "Page " << pageno << " is not present in the physical memory";
-                cout << "Page " << pageno << "is accomodated in frame" << index << " after removing page " << frames[0][index];
-                pagetable[frames[0][index]] = -1;
-                frames[0][index] = pageno;
-                frames[1][index] = offset;
-                pagetable[pageno] = index;
-                index++;
-            }
+//             else
+//             {
+//                 cout << "Page " << pageno << " is not present in the physical memory";
+//                 cout << "Page " << pageno << "is accomodated in frame" << index << " after removing page " << frames[0][index];
+//                 pagetable[frames[0][index]] = -1;
+//                 frames[0][index] = pageno;
+//                 frames[1][index] = offset;
+//                 pagetable[pageno] = index;
+//                 index++;
+//             }
 
-            if (index == nf)
-            {
-                index = 0;
-            }
-        }
-    }
+//             if (index == nf)
+//             {
+//                 index = 0;
+//             }
+//         }
+//     }
 
-    cout << endl
-         << "Total number of inputs:" << input;
-    cout << endl
-         << "Total number of page faults:" << pagefaults;
+//     cout << endl
+//          << "Total number of inputs:" << input;
+//     cout << endl
+//          << "Total number of page faults:" << pagefaults;
 
-    cout << endl
-         << "Page Fault Ratio is: " << pagefaults / input;
-    cout << endl;
-    cout << endl
-         << "Page Table";
-    cout << endl
-         << "Page number - Frame number" << endl;
-    for (i = 0; i < np; i++)
-    {
-        cout << i << " - " << pagetable[i] << endl;
-    }
+//     cout << endl
+//          << "Page Fault Ratio is: " << pagefaults / input;
+//     cout << endl;
+//     cout << endl
+//          << "Page Table";
+//     cout << endl
+//          << "Page number - Frame number" << endl;
+//     for (i = 0; i < np; i++)
+//     {
+//         cout << i << " - " << pagetable[i] << endl;
+//     }
 
-    cout << endl;
-    cout << endl
-         << "Memory Table";
-    cout << endl
-         << "Frame Number - Page Contained" << endl;
-    for (i = 0; i < nf; i++)
-    {
-        cout << i << " - " << frames[0][i] << endl;
-    }
-}
+//     cout << endl;
+//     cout << endl
+//          << "Memory Table";
+//     cout << endl
+//          << "Frame Number - Page Contained" << endl;
+//     for (i = 0; i < nf; i++)
+//     {
+//         cout << i << " - " << frames[0][i] << endl;
+//     }
+// }
 
 void MemoryManagement()
 {
@@ -535,7 +535,7 @@ void Synchronization()
 void menu()
 {
     printf(CYN "\n\t-------------------------------\n" reset);
-    printf("\t\t\033[1;37mMain Menu\n\033[0m");
+    cout << "\t\t\033[1;37mMain Menu\n\033[0m";
     printf(CYN "\t-------------------------------\n" reset);
     printf(CYN "\t1. Scheduling algorithms\n" reset);
     printf(CYN "\t2. Synchronization algoritms\n" reset);

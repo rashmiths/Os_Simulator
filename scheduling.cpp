@@ -2,115 +2,136 @@
 using namespace std;
 void roundRobin()
 {
-    //Taking input from the user for number of processes
-    int n;
-    cout << "Enter the number of processes \n";
+    cout << "Enter the number of processes: ";
+    int n, i, j;
     cin >> n;
-
-    //Creating 3 arrays for burst time, arrival time and process id
-    int bur_time[n];
-    int arr_time[n];
-    int pro[n];
-    int q;
-
-    //Entering the process id
-    for (int i = 0; i < n; i++)
-        pro[i] = i + 1;
-    cout << "\n";
-
-    //Taking arrival time of the processes
-    cout << "Enter the arrival time of the processes \n";
-    for (int i = 0; i < n; i++)
-        cin >> arr_time[i];
-
-    //Taking burst time of the processes
-    cout << "Enter burst time of the processes \n";
-    for (int i = 0; i < n; i++)
-        cin >> bur_time[i];
-
-    //taking time quantum for the processes
-    cout << "Enter the time quantam for each process: ";
-    cin >> q;
-
-    /*calling the avgtime function to calculate 
-    avg waiting time and average turn around time */
-    //creating two arrays wait_time and turn_time
-    //to store waiting time and turn aroung time of each process
-    int wait_time[n], turn_time[n];
-
-    // creating remaining_time array to maintain remaining time for each process
-    int remaining_time[n];
-
-    for (int i = 0; i < n; i++)
-        remaining_time[i] = bur_time[i];
-
-    int rem = n; // variable for remaining processes
-    int elapsed_time = 0, flag = 0;
-    int i = 0; // variable for maintaining process number
-
-    // looping till all the processes are done
-    while (rem != 0)
+    while (n < 0)
     {
-        //if remaining time of process is less than quantum time
-        //then the remaining time is set to 0
-        if (remaining_time[i] <= q && remaining_time[i] > 0)
-        {
-            elapsed_time += remaining_time[i];
-            remaining_time[i] = 0;
-            flag = 1;
-        }
-
-        //if remaining time of a process is greater than 0
-        //quantum time is subtracted from the remaining time
-        else if (remaining_time[i] > 0)
-        {
-            remaining_time[i] -= q;
-            elapsed_time += q;
-        }
-
-        if (remaining_time[i] == 0 && flag)
-        {
-            //if a process is completed the remaining process decreases by one
-            rem--;
-
-            //turnaround time of a a process is calculated as elapsed time - arrival time
-            turn_time[i] = elapsed_time - arr_time[i];
-
-            //wait time is calculated as turnaround time - burst time
-            wait_time[i] = elapsed_time - arr_time[i] - bur_time[i];
-            flag = 0;
-        }
-
-        if (i == n - 1)
-            i = 0;
-        else if (arr_time[i + 1] <= elapsed_time)
-            i++;
-        else
-            i = 0;
+        cout << "Wrong input, try again\nEnter number of processes: ";
+        cin >> n;
     }
-    //Displaying the processes with all details
-    cout << "ProcessID   "
-         << "Arrival time    "
-         << "Burst time       "
-         << "Waiting time  "
-         << "Turnaround Time  "
-         << "\n";
-    int wtsum = 0;
-    int tatsum = 0;
-    for (int i = 0; i < n; i++)
+    vector<tuple<int, int, int, int, int>> times(n); // {at, bt, ct, tat, wt}
+
+    for (i = 0; i < n; i++)
     {
-        tatsum += turn_time[i];
-        wtsum += wait_time[i];
-        cout << "   " << pro[i] << "\t\t " << arr_time[i] << "\t\t " << bur_time[i] << "\t\t " << wait_time[i] << "\t\t " << turn_time[i] << "\n";
+        int t;
+        cout << "For process " << i + 1 << ":" << endl;
+        cout << "Arrival Time: ";
+        cin >> t;
+        while (t < 0)
+        {
+            cout << "Wrong input, try again\nArrival time: ";
+            cin >> t;
+        }
+        get<0>(times[i]) = t; // Arrival time
+        cout << "Burst Time: ";
+        cin >> t;
+        while (t < 0)
+        {
+            cout << "Wrong input, try again\nBurst time: ";
+            cin >> t;
+        }
+        cout << endl;
+        get<1>(times[i]) = t; // Burst time
+        get<2>(times[i]) = 0; // Completion time
+        get<3>(times[i]) = 0; // Turn around time
+        get<4>(times[i]) = 0; // Waiting time
     }
-    cout << "\n";
 
-    //Displaying average wating time
-    cout << "Average waiting time = " << (float)wtsum / n;
-    cout << "\n";
+    int ti = INT_MAX; // current time
 
-    //Diplaying average turn around time
-    cout << "Average turn around time = " << (float)tatsum / n;
+    int slicetime;
+
+    cout << "Enter slice time: ";
+    cin >> slicetime;
+
+    while (slicetime <= 0)
+    {
+        cout << "Wrong input, try again\nEnter slice time: ";
+        cin >> slicetime;
+    }
+
+    for (i = 0; i < n; i++)
+    {
+        ti = min(ti, get<0>(times[i]));
+    }
+
+    int visited[n] = {0}, bt[n]; // completed programs and Burst time
+
+    for (i = 0; i < n; i++)
+    {
+        bt[i] = get<1>(times[i]);
+    }
+
+    while (1)
+    {
+
+        int f = 0;
+
+        for (i = 0; i < n; i++)
+        {
+
+            if (visited[i])
+                continue;
+
+            if (get<0>(times[i]) <= ti && get<1>(times[i]) > 0)
+            {
+                f = 1;
+                ti += min(bt[i], slicetime);
+                bt[i] = max(0, bt[i] - slicetime);
+
+                if (bt[i] == 0)
+                {
+                    get<2>(times[i]) = ti;
+                    get<3>(times[i]) = get<2>(times[i]) - get<0>(times[i]);
+                    get<4>(times[i]) = get<3>(times[i]) - get<1>(times[i]);
+                    visited[i] = 1;
+                }
+            }
+        }
+
+        if (f == 0)
+        {
+            ti++;
+        }
+
+        f = 0;
+
+        // checking if all programs completed
+        for (i = 0; i < n; i++)
+        {
+            if (visited[i] == 0)
+            {
+                f = 1;
+                break;
+            }
+        }
+
+        if (f == 0)
+            break;
+    }
+
+    double TAT = 0, TWT = 0;
+
+    for (i = 0; i < n; i++)
+    {
+        TAT += get<3>(times[i]);
+        TWT += get<4>(times[i]);
+    }
+
+    cout << "\nProcess No.\tArrival Time\tBurst Time\tCompletion Time\t\tTurn-around Time\tWaiting Time\n";
+    for (i = 0; i < n; i++)
+    {
+        cout << i + 1 << "\t\t" << get<0>(times[i]) << "\t\t" << get<1>(times[i]) << "\t\t" << get<2>(times[i]) << "\t\t\t" << get<3>(times[i]) << "\t\t\t" << get<4>(times[i]) << "\n";
+    }
+
+    TAT = TAT / (1.0 * n); // Average TAT
+    TWT = TWT / (1.0 * n); // Average WT
+
+    cout << "\nAverage Turn around time is: " << TAT << "\n";
+    cout << "Average Waiting time is: " << TWT << "\n";
+
+    return;
 }
 
 void sjf()
@@ -130,6 +151,7 @@ void sjf()
         cin >> at[i];
         cout << "Burst time: ";
         cin >> bt[i];
+        cout << endl;
     }
 
     long long wt[size], tat[size], total_WT = 0, total_TAT = 0;
@@ -187,20 +209,16 @@ void sjf()
     for (int i = 0; i < size; i++)
         tat[i] = bt[i] + wt[i];
 
+    cout << "\nProcess No.\tArrival Time\tBurst Time\tTurn-around Time\tWaiting Time\n";
     for (int i = 0; i < size; i++)
     {
-        // calculating total for the average
         total_TAT += tat[i];
         total_WT += wt[i];
-        //printing
-        cout << "Process: " << i + 1 << " ";
-        cout << "Waiting Time: " << wt[i] << " ";
-        cout << "Turn Around Time: " << tat[i] << endl;
-        cout << endl;
+        cout << i + 1 << "\t\t" << at[i] << "\t\t" << bt[i] << "\t\t" << tat[i] << "\t\t\t" << wt[i] << "\n";
     }
-    //printing averages
-    cout << "Average Waiting Time : " << (double)total_WT / size << endl;
-    cout << "Average Turn Around Time : " << (double)total_TAT / size << endl;
+
+    cout << "\nAverage Turn around time is: " << (double)total_TAT / size << "\n";
+    cout << "Average Waiting time is: " << (double)total_WT / size << "\n";
 }
 
 void fcfs()
@@ -222,7 +240,8 @@ void fcfs()
     for (i = 0; i < n; i++)
     {
         int t;
-        cout << "Arrival Time P" << i << ": ";
+        cout << "For process " << i + 1 << ":" << endl;
+        cout << "Arrival time: ";
         cin >> t;
         while (t < 0)
         {
@@ -230,7 +249,7 @@ void fcfs()
             cin >> t;
         }
         get<0>(times[i]) = t; // Arrival time
-        cout << "Burst Time   P" << i << ": ";
+        cout << "Burst time: ";
         cin >> t;
         while (t < 0)
         {
@@ -304,11 +323,15 @@ void LJF()
     struct processes arr[n];
     struct processes k; // temporary structure used in swapping
 
-    cout << "Enter the processid, arrival time and burst time for each process" << endl;
-
     for (i = 0; i < n; i++)
     {
-        cin >> arr[i].pid >> arr[i].at >> arr[i].bt;
+        cout << "For process " << i + 1 << ":" << endl;
+        cout << "Arrival time: ";
+        cin >> arr[i].at;
+        cout << "Burst time: ";
+        cin >> arr[i].bt;
+        arr[i].pid = i + 1;
+        cout << endl;
     }
 
     //sorting the array of structures according to arrival time and if arrival time is same then sorting it according to processid
@@ -394,7 +417,7 @@ void LJF()
         sumwt += arr[i].wt;
     }
 
-    cout << "PID\tAT\tBT\tCT\tTAT\tWT" << endl;
+    cout << "\nProcess No.\tArrival Time\tBurst Time\tCompletion Time\t\tTurn-around Time\tWaiting Time\n";
     for (i = 0; i < n; i++)
     {
         cout << arr[i].pid << "\t" << arr[i].at << "\t" << arr[i].bt << "\t" << arr[i].ct << "\t" << arr[i].tat << "\t" << arr[i].wt << endl;
@@ -403,7 +426,7 @@ void LJF()
     cout << "The average turnaround time is: " << float(sumtat) / float(n) << endl;
     cout << "The average waiting time is: " << float(sumwt) / float(n) << endl;
 }
-
+//
 void LRTF()
 {
 
@@ -419,21 +442,25 @@ void LRTF()
     };
 
     int n, i, j, sumtat = 0, sumwt = 0, timeslice;
-    cout << "Enter no of processes" << endl;
+    cout << "Enter no of processes: ";
     cin >> n;
 
-    cout << "Enter the timeslice" << endl;
+    cout << "Enter the timeslice: ";
     cin >> timeslice;
 
     struct processes arr[n];
     struct processes k; // temporary structure used in swapping
 
-    cout << "Enter the processid, arrival time and burst time for each process" << endl;
-
     for (i = 0; i < n; i++)
     {
-        cin >> arr[i].pid >> arr[i].at >> arr[i].bt;
+        cout << "For process " << i + 1 << ":" << endl;
+        cout << "Arrival time: ";
+        cin >> arr[i].at;
+        cout << "Burst time: ";
+        cin >> arr[i].bt;
         arr[i].rembt = arr[i].bt;
+        arr[i].pid = i + 1;
+        cout << endl;
     }
 
     //sorting the array of structures according to arrival time and if arrival time is same then sorting it according to processid
@@ -541,10 +568,10 @@ void LRTF()
     }
 
     cout << "The table is as follows: (its shown according to the process that happens first) " << endl;
-    cout << "PID\tAT\tBT\tCT\tTAT\tWT" << endl;
+    cout << "\nProcess No.\tArrival Time\tBurst Time\tCompletion Time\t\tTurn-around Time\tWaiting Time\n";
     for (i = 0; i < n; i++)
     {
-        cout << arr[i].pid << "\t" << arr[i].at << "\t" << arr[i].bt << "\t" << arr[i].ct << "\t" << arr[i].tat << "\t" << arr[i].wt << endl;
+        cout << arr[i].pid << "\t\t" << arr[i].at << "\t\t" << arr[i].bt << "\t\t" << arr[i].ct << "\t\t\t\t" << arr[i].tat << "\t\t" << arr[i].wt << endl;
     }
 
     cout << "The average turnaround time is: " << float(sumtat) / float(n) << endl;
@@ -747,12 +774,14 @@ void priority_premptive()
     for (i = 0; i < n; i++)
     {
         a[i].processID = i + 1;
-        printf("Enter the Arrival time of Process[%d]: ", i + 1);
+        cout << "For process " << i + 1 << ":" << endl;
+        cout << "Arrival time: ";
         cin >> a[i].arrivalTime;
-        printf("Enter the Burst time of Process[%d]: ", i + 1);
+        cout << "Burst time: ";
         cin >> a[i].burstTime;
-        printf("Enter the Priority of Process[%d]: ", i + 1);
+        cout << "Piority: ";
         cin >> a[i].priority;
+        cout << endl;
     }
 
     priority(a, n);
@@ -761,7 +790,7 @@ void priority_premptive()
 //hrrn
 struct node
 {
-    char pname[50];
+    int pname;
     int btime;
     int atime;
     int wtime;
@@ -770,14 +799,17 @@ struct node
 void insert(int n)
 {
     int i;
-    cout << "Enter the Process ID, Arrival Time and Burst Time\n";
-    for (i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        cin >> a[i].pname;
+        cout << "For process " << i + 1 << ":" << endl;
+        cout << "Arrival time: ";
         cin >> a[i].atime;
+        cout << "Burst time: ";
         cin >> a[i].btime;
         a[i].rr = 0;
+        a[i].pname = i + 1;
         a[i].wtime = -a[i].atime;
+        cout << endl;
     }
 }
 bool btimeSort(node a, node b)
@@ -819,33 +851,22 @@ void disp(int n)
     float averageWaitingTime = 0;
     float averageResponseTime = 0;
     float averageTAT = 0;
-    cout << "\n";
-    cout << "P.Name  AT\tBT\tCT\tTAT\tWT\tRT\n";
+    cout << "\nProcess No.\tArrival Time\tBurst Time\tCompletion Time\t\tTurn-around Time\tWaiting Time\n";
     for (i = 0; i < n; i++)
     {
-        cout << 'P' << a[i].pname << "\t";
-        cout << a[i].atime << "\t";
-        cout << a[i].btime << "\t";
-        cout << tArray[i + 1] << "\t";
-        cout << tArray[i] - a[i].atime + a[i].btime << "\t";
+        cout << 'P' << a[i].pname << "\t\t";
+        cout << a[i].atime << "\t\t";
+        cout << a[i].btime << "\t\t";
+        cout << tArray[i + 1] << "\t\t";
+        cout << tArray[i] - a[i].atime + a[i].btime << "\t\t";
         averageTAT += tArray[i] - a[i].atime + a[i].btime;
-        cout << a[i].wtime << "\t";
+        cout << a[i].wtime << "\t\t";
         averageWaitingTime += tArray[i] - a[i].atime;
-        cout << tArray[i] - a[i].atime << "\t";
+        cout << tArray[i] - a[i].atime << "\t\t";
         averageResponseTime += tArray[i] - a[i].atime;
         cout << "\n";
     }
     cout << "\n";
-    cout << "\nGantt Chart\n";
-    for (i = 0; i < n; i++)
-    {
-        cout << "|  P" << a[i].pname << "   ";
-    }
-    cout << "\n";
-    for (i = 0; i < n + 1; i++)
-    {
-        cout << tArray[i] << "\t";
-    }
     cout << "\n";
     cout << "Average Response time: " << (float)averageResponseTime / (float)n << endl;
     cout << "Average Waiting time: " << (float)averageWaitingTime / (float)n << endl;
@@ -854,7 +875,7 @@ void disp(int n)
 void hrrn()
 {
     int nop, choice, i;
-    cout << "Enter number of processes\n";
+    cout << "Enter number of processes: ";
     cin >> nop;
     insert(nop);
     disp(nop);
@@ -898,9 +919,11 @@ void srtf()
 
     for (int i = 0; i < n; i++)
     {
-        cout << "Enter arrival time of process " << i + 1 << ": ";
+        cout << "For process " << i + 1 << ":" << endl;
+        cout << "Arrival Time: ";
         cin >> p[i].arrival_time;
-        cout << "Enter burst time of process " << i + 1 << ": ";
+        cout << "Burst time"
+             << ": ";
         cin >> p[i].burst_time;
         p[i].pid = i + 1;
         burst_remaining[i] = p[i].burst_time;
@@ -984,20 +1007,10 @@ void srtf()
     cout << endl
          << endl;
 
-    cout << "#P\t"
-         << "AT\t"
-         << "BT\t"
-         << "ST\t"
-         << "CT\t"
-         << "TAT\t"
-         << "WT\t"
-         << "RT\t"
-         << "\n"
-         << endl;
-
+    cout << "\nProcess No.\tArrival Time\tStart Time\tBurst Time\tCompletion Time\t\tTurn-around Time\tWaiting Time\tResponse Time\n";
     for (int i = 0; i < n; i++)
     {
-        cout << p[i].pid << "\t" << p[i].arrival_time << "\t" << p[i].burst_time << "\t" << p[i].start_time << "\t" << p[i].completion_time << "\t" << p[i].turnaround_time << "\t" << p[i].waiting_time << "\t" << p[i].response_time << "\t"
+        cout << p[i].pid << "\t\t" << p[i].arrival_time << "\t\t" << p[i].burst_time << "\t\t" << p[i].start_time << "\t\t" << p[i].completion_time << "\t\t\t\t" << p[i].turnaround_time << "\t\t" << p[i].waiting_time << "\t\t" << p[i].response_time << "\t\t"
              << "\n"
              << endl;
     }
