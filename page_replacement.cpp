@@ -283,7 +283,12 @@ bool search(int key, vector<int> &fr)
 {
     for (int i = 0; i < fr.size(); i++)
         if (fr[i] == key)
+        {
+            cout << "Page " << key << " is already present in F" << i << "\n\n";
+
             return true;
+        }
+
     return false;
 }
 
@@ -345,17 +350,24 @@ void optimalPage(int pg[], int pn, int fn)
 
         // If there is space available in frames.
         if (fr.size() < fn)
+        {
+
             fr.push_back(pg[i]);
+            cout << "Page " << pg[i] << " has been accomodated in F" << fr.size() - 1 << "\n\n";
+        }
 
         // Find the page to be replaced.
         else
         {
             int j = predict(pg, fr, pn, i + 1);
+
+            cout << "Page " << pg[i] << " has been accomodated in F" << j << " replacing Page " << fr[j] << "\n\n";
             fr[j] = pg[i];
         }
     }
-    cout << "No. of hits = " << hit << endl;
-    cout << "No. of misses = " << pn - hit << endl;
+    // cout << "No. of hits = " << hit << endl;
+    // cout << "No. of misses = " << pn - hit << endl;
+    cout << "\nTotal Number of Page Faults: " << pn - hit << "\nPage Faults Ratio = " << (float(pn - hit) / pn) << "\n\n";
 }
 
 int optimal_pra()
