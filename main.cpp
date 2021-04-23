@@ -499,7 +499,8 @@ void Synchronization()
         cout << "\t1. Producer Consumer Problem\n";
         cout << "\t2. Readers Writers Problem\n";
         cout << "\t3. Dining Philosophers Problem\n";
-        cout << "\t4. Exit Synchronization\n";
+        cout << "\t4. Sleeping Barber Problem\n";
+        cout << "\t5. Exit Synchronization\n";
         cout << "-------------------------------\n";
         cout << "Enter your choice: ";
         cin >> ch;
@@ -519,6 +520,10 @@ void Synchronization()
             break;
 
         case 4:
+            sleeping_barber();
+            break;
+
+        case 5:
             cout << "______________________________________________________________\n";
             cout << "\nExit Synchronization........\n";
             cout << "______________________________________________________________\n\n";
