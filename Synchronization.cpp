@@ -4,6 +4,10 @@
 #include <pthread.h>
 #include <semaphore.h>
 
+#define GRN "\e[0;92m"
+#define YEL "\e[1;93m"
+#define RED "\e[1;91m"
+#define reset "\e[0m"
 using namespace std;
 
 
@@ -17,12 +21,12 @@ int n;
 
 void *producer(void *param)
 {
-    cout << "Producer " << (*(int *)param) << " is waiting\n";
+    printf("Producer %d is waiting\n", (*(int *)param));
     int item = rand() % 10;
 
     sem_wait(&empty);
     pthread_mutex_lock(&mex);
-    cout << "Producer " << (*(int *) param) << " produces data : " << item << "\n";
+    printf(GRN "Producer %d produces data : %d \n" reset, (*(int *) param), item);
     buffer[++n]=item;
     sleep(2);
     
@@ -33,12 +37,12 @@ void *producer(void *param)
 
 void *consumer(void *param)
 {
-    cout << "Consumer " << (*(int *)param) << " is waiting\n";
+    printf("Consumer %d is waiting\n", (*(int *)param));
     
     sem_wait(&full);
     pthread_mutex_lock(&mex);
 
-    cout << "Consumer " << (*(int *) param) << " consumes item : " << buffer[n--] <<"\n";
+    printf(YEL"Consumer %d consumes item : %d \n" reset, (*(int *) param), buffer[n--] );
     sleep(1);
     pthread_mutex_unlock(&mex);
     sem_post(&empty);   
@@ -93,10 +97,10 @@ int val = 1, readerCount;
 
 void *writer(void *param)
 {
-    cout << "Writer " << (*(int *)param) << " is waiting\n";
+    printf("Writer %d is waiting\n", *(int *)param);
     sem_wait(&wrt);
     val = rand()%10;
-    cout << "Writer " << (*(int *) param) << " writes data : " << val << "\n";
+    printf(GRN "Writer %d writes data : %d \n" reset, (*(int *) param), val);
     sleep(2);
 
     sem_post(&wrt);
@@ -105,7 +109,7 @@ void *writer(void *param)
 
 void *reader(void *param)
 {
-    cout << "Reader " << (*(int *)param) << " is waiting\n";
+    printf("Reader %d is waiting\n", (*(int *)param));
     pthread_mutex_lock(&mex);
     readerCount++;
     //if its the first reader, lock semaphore so writer cant write
@@ -114,7 +118,7 @@ void *reader(void *param)
         sem_wait(&wrt);
     }
     pthread_mutex_unlock(&mex);
-    cout << "Reader " << (*(int *) param) << " reads data : " << val << "\n";
+    printf(YEL "Reader %d reads data : %d \n" reset, (*(int *) param), val);
     sleep(5);
 
     pthread_mutex_lock(&mex);
@@ -180,14 +184,14 @@ sem_t chopstick[10];
 void * tryEat(void * num)
 {
     int phil = *(int *)num;
-    printf("\nPhilosopher %d is hungry", phil);
+    printf(YEL "\nPhilosopher %d is hungry" reset, phil);
     sem_wait(&allowed);    
     sem_wait(&chopstick[phil]);
-    printf("\nPhilosopher %d picked up chopstick %d", phil, phil);
+    printf(GRN "\nPhilosopher %d picked up chopstick %d" reset, phil, phil);
     sem_wait(&chopstick[(phil+1)%n]);
-    printf("\nPhilosopher %d picked up chopstick %d" , phil, (phil+1)%n);
+    printf(GRN "\nPhilosopher %d picked up chopstick %d" reset, phil, (phil+1)%n);
 
-    printf("\n->Philosopher %d is eating", phil);
+    printf(RED "\nPhilosopher %d is eating" reset, phil);
 
     sleep(2);
     printf("\nPhilosopher %d is thinking", phil);
