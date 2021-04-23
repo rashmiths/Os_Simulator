@@ -758,153 +758,108 @@ void priority_premptive()
     priority(a, n);
     return;
 }
-
-//HRRN
-struct process_hrrn
+//hrrn
+struct node
 {
-    int pid;
-    int arrival_time;
-    int burst_time;
-    int start_time;
-    int completion_time;
-    int turnaround_time;
-    int waiting_time;
-    int response_time;
-};
-
+    char pname[50];
+    int btime;
+    int atime;
+    int wtime;
+    float rr = 0;
+} a[50];
+void insert(int n)
+{
+    int i;
+    cout << "Enter the Process ID, Arrival Time and Burst Time\n";
+    for (i = 0; i < n; i++)
+    {
+        cin >> a[i].pname;
+        cin >> a[i].atime;
+        cin >> a[i].btime;
+        a[i].rr = 0;
+        a[i].wtime = -a[i].atime;
+    }
+}
+bool btimeSort(node a, node b)
+{
+    return a.btime < b.btime;
+}
+bool atimeSort(node a, node b)
+{
+    return a.atime < b.atime;
+}
+bool rrtimeSort(node a, node b)
+{
+    return a.rr > b.rr;
+}
+void disp(int n)
+{
+    sort(a, a + n, btimeSort);
+    sort(a, a + n, atimeSort);
+    int ttime = 0, i;
+    int j, tArray[n];
+    for (i = 0; i < n; i++)
+    {
+        j = i;
+        while (a[j].atime <= ttime && j != n)
+        {
+            j++;
+        }
+        for (int q = i; q < j; q++)
+        {
+            a[q].wtime = ttime - a[q].atime;
+            a[q].rr = (float)(a[q].wtime + a[q].btime) / (float)a[q].btime;
+        }
+        sort(a + i, a + j, rrtimeSort);
+        tArray[i] = ttime;
+        cout << endl;
+        ttime += a[i].btime;
+    }
+    tArray[i] = ttime;
+    float averageWaitingTime = 0;
+    float averageResponseTime = 0;
+    float averageTAT = 0;
+    cout << "\n";
+    cout << "P.Name  AT\tBT\tCT\tTAT\tWT\tRT\n";
+    for (i = 0; i < n; i++)
+    {
+        cout << 'P' << a[i].pname << "\t";
+        cout << a[i].atime << "\t";
+        cout << a[i].btime << "\t";
+        cout << tArray[i + 1] << "\t";
+        cout << tArray[i] - a[i].atime + a[i].btime << "\t";
+        averageTAT += tArray[i] - a[i].atime + a[i].btime;
+        cout << a[i].wtime << "\t";
+        averageWaitingTime += tArray[i] - a[i].atime;
+        cout << tArray[i] - a[i].atime << "\t";
+        averageResponseTime += tArray[i] - a[i].atime;
+        cout << "\n";
+    }
+    cout << "\n";
+    cout << "\nGantt Chart\n";
+    for (i = 0; i < n; i++)
+    {
+        cout << "|  P" << a[i].pname << "   ";
+    }
+    cout << "\n";
+    for (i = 0; i < n + 1; i++)
+    {
+        cout << tArray[i] << "\t";
+    }
+    cout << "\n";
+    cout << "Average Response time: " << (float)averageResponseTime / (float)n << endl;
+    cout << "Average Waiting time: " << (float)averageWaitingTime / (float)n << endl;
+    cout << "Average TA time: " << (float)averageTAT / (float)n << endl;
+}
 void hrrn()
 {
-
-    int n;
-    struct process_hrrn p[100];
-    float avg_turnaround_time;
-    float avg_waiting_time;
-    float avg_response_time;
-    float cpu_utilisation;
-    int total_turnaround_time = 0;
-    int total_waiting_time = 0;
-    int total_response_time = 0;
-    int total_idle_time = 0;
-    float throughput;
-    int burst_remaining[100];
-    int is_completed[100];
-    memset(is_completed, 0, sizeof(is_completed));
-
-    cout << setprecision(2) << fixed;
-
-    cout << "Enter the number of processes: ";
-    cin >> n;
-
-    for (int i = 0; i < n; i++)
-    {
-        cout << "Enter arrival time of process " << i + 1 << ": ";
-        cin >> p[i].arrival_time;
-        cout << "Enter burst time of process " << i + 1 << ": ";
-        cin >> p[i].burst_time;
-        p[i].pid = i + 1;
-        burst_remaining[i] = p[i].burst_time;
-        cout << endl;
-    }
-
-    int current_time = 0;
-    int completed = 0;
-    int prev = 0;
-
-    while (completed != n)
-    {
-        int idx = -1;
-        int mn = 10000000;
-        for (int i = 0; i < n; i++)
-        {
-            if (p[i].arrival_time <= current_time && is_completed[i] == 0)
-            {
-                if (burst_remaining[i] < mn)
-                {
-                    mn = burst_remaining[i];
-                    idx = i;
-                }
-                if (burst_remaining[i] == mn)
-                {
-                    if (p[i].arrival_time < p[idx].arrival_time)
-                    {
-                        mn = burst_remaining[i];
-                        idx = i;
-                    }
-                }
-            }
-        }
-
-        if (idx != -1)
-        {
-            if (burst_remaining[idx] == p[idx].burst_time)
-            {
-                p[idx].start_time = current_time;
-                total_idle_time += p[idx].start_time - prev;
-            }
-            burst_remaining[idx] -= 1;
-            current_time++;
-            prev = current_time;
-
-            if (burst_remaining[idx] == 0)
-            {
-                p[idx].completion_time = current_time;
-                p[idx].turnaround_time = p[idx].completion_time - p[idx].arrival_time;
-                p[idx].waiting_time = p[idx].turnaround_time - p[idx].burst_time;
-                p[idx].response_time = p[idx].start_time - p[idx].arrival_time;
-
-                total_turnaround_time += p[idx].turnaround_time;
-                total_waiting_time += p[idx].waiting_time;
-                total_response_time += p[idx].response_time;
-
-                is_completed[idx] = 1;
-                completed++;
-            }
-        }
-        else
-        {
-            current_time++;
-        }
-    }
-
-    int min_arrival_time = 10000000;
-    int max_completion_time = -1;
-    for (int i = 0; i < n; i++)
-    {
-        min_arrival_time = min(min_arrival_time, p[i].arrival_time);
-        max_completion_time = max(max_completion_time, p[i].completion_time);
-    }
-
-    avg_turnaround_time = (float)total_turnaround_time / n;
-    avg_waiting_time = (float)total_waiting_time / n;
-    avg_response_time = (float)total_response_time / n;
-    // cpu_utilisation = ((max_completion_time - total_idle_time) / (float)max_completion_time) * 100;
-    // throughput = float(n) / (max_completion_time - min_arrival_time);
-
-    cout << endl
-         << endl;
-
-    cout << "#P\t"
-         << "AT\t"
-         << "BT\t"
-         << "ST\t"
-         << "CT\t"
-         << "TAT\t"
-         << "WT\t"
-         << "RT\t"
-         << "\n"
-         << endl;
-
-    for (int i = 0; i < n; i++)
-    {
-        cout << p[i].pid << "\t" << p[i].arrival_time << "\t" << p[i].burst_time << "\t" << p[i].start_time << "\t" << p[i].completion_time << "\t" << p[i].turnaround_time << "\t" << p[i].waiting_time << "\t" << p[i].response_time << "\t"
-             << "\n"
-             << endl;
-    }
-    cout << "Average Turnaround Time = " << avg_turnaround_time << endl;
-    cout << "Average Waiting Time = " << avg_waiting_time << endl;
-    cout << "Average Response Time = " << avg_response_time << endl;
+    int nop, choice, i;
+    cout << "Enter number of processes\n";
+    cin >> nop;
+    insert(nop);
+    disp(nop);
+    return;
 }
-
 //SRTF
 struct process_srtf
 {
