@@ -288,7 +288,7 @@ bool search(int key, vector<int> &fr)
     for (int i = 0; i < fr.size(); i++)
         if (fr[i] == key)
         {
-            cout << "Page " << key << " is already present in F" << i << "\n\n";
+            printf(GRN "Page %d is already present in F%d \n\n" reset, key, i);
 
             return true;
         }
@@ -339,6 +339,7 @@ void optimalPage(int pg[], int pn, int fn)
 
     // Traverse through page reference array
     // and check for miss and hit.
+    cout << endl;
     int hit = 0;
     for (int i = 0; i < pn; i++)
     {
@@ -357,7 +358,7 @@ void optimalPage(int pg[], int pn, int fn)
         {
 
             fr.push_back(pg[i]);
-            cout << "Page " << pg[i] << " has been accomodated in F" << fr.size() - 1 << "\n\n";
+            printf(RED "Page %d has been accomodated in F%d \n\n" reset, pg[i], (int)(fr.size()-1));
         }
 
         // Find the page to be replaced.
@@ -365,7 +366,7 @@ void optimalPage(int pg[], int pn, int fn)
         {
             int j = predict(pg, fr, pn, i + 1);
 
-            cout << "Page " << pg[i] << " has been accomodated in F" << j << " replacing Page " << fr[j] << "\n\n";
+            printf(RED "Page %d has been accomodated in F%d  replacing Page %d \n\n" reset, pg[i], j, fr[j]);
             fr[j] = pg[i];
         }
     }
@@ -389,8 +390,8 @@ int optimal_pra()
         scanf("%d", &pg[i]);
     }
 
-    int pn = sizeof(pg) / sizeof(pg[0]);
+    //int pn = sizeof(pg) / sizeof(pg[0]);
 
-    optimalPage(pg, pn, fn);
+    optimalPage(pg, n, fn);
     return 0;
 }
