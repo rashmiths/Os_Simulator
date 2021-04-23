@@ -257,7 +257,7 @@ int mru_pra()
         }
         if (flag == 0)
         {
-            lru = input[num_frm-1];
+            lru = input[num_frm - 1];
 
             for (k = 0; k < num_frm; k++)
             {
@@ -363,7 +363,7 @@ int optimal_pra()
     int pg[100];
     int i, n;
     int fn;
-     cout << "Page Replacement - Optimal\n\nEnter the number of frames: ";
+    cout << "Page Replacement - Optimal\n\nEnter the number of frames: ";
     cin >> fn;
     cout << "Enter the number of pages to get";
     cin >> n;

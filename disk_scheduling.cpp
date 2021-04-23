@@ -130,31 +130,166 @@ void disk_sstf()
 }
 void disk_fcfs()
 {
-	int n, h;
-	vector<int> track(n);
-	cout << "Enter total tracks:";
+	int queue[20], n, head, i, j, k, seek = 0, max, diff;
+	float avg;
+	printf("Enter the max range of disk\n");
+	scanf("%d", &max);
+	printf("Enter the size of queue request\n");
+	scanf("%d", &n);
+	printf("Enter the queue of disk positions to be read\n");
+	for (i = 1; i <= n; i++)
+		scanf("%d", &queue[i]);
+	printf("Enter the initial head position\n");
+	scanf("%d", &head);
+	queue[0] = head;
+	for (j = 0; j <= n - 1; j++)
+	{
+		diff = abs(queue[j + 1] - queue[j]);
+		seek += diff;
+		printf("Disk head moves from %d to %d with seek %d\n", queue[j], queue[j + 1], diff);
+	}
+	printf("Total seek time is %d\n", seek);
+	avg = seek / (float)n;
+	printf("Average seek time is %f\n", avg);
+	return;
+}
+//SCAN
+void disk_scan()
+{
+	int i, j, k, n, m, sum = 0, x, y, h;
+	cout << "Enter the size of disk\n";
+	cin >> m;
+	cout << "Enter number of requests\n";
 	cin >> n;
-	cout << "Enter requested track position:" << endl;
-	for (int i = 0; i < n; i++)
+	cout << "Enter the requests\n";
+	vector<int> a(n), b;
+	for (i = 0; i < n; i++)
 	{
-		cout << "\t" << i + 1 << ":";
-		cin >> track[i];
+		cin >> a[i];
 	}
-	cout << "Enter initial head position:";
+	for (i = 0; i < n; i++)
+	{
+		if (a[i] > m)
+		{
+			cout << "Error, Unknown position " << a[i] << "\n";
+			return;
+		}
+	}
+	cout << "Enter the head position\n";
 	cin >> h;
-	int seek_time = 0;
-	vector<int> seek_sequence;
-	for (int i = 0; i < n; i++)
+	int temp = h;
+	a.push_back(h);
+	a.push_back(m);
+	a.push_back(0);
+	sort(a.begin(), a.end());
+	for (i = 0; i < a.size(); i++)
 	{
-		seek_time += abs(track[i] - h);
-		h = track[i];
-		seek_sequence.push_back(track[i]);
+		if (h == a[i])
+			break;
 	}
-	cout << "Final output:" << endl;
-	cout << "Total seek time = " << seek_time << endl;
-	cout << "Seek sequence is: ";
-	for (int i = 0; i < n; i++)
+	k = i;
+	if (k < n / 2)
 	{
-		cout << seek_sequence[i] << " ";
+		for (i = k; i < a.size(); i++)
+		{
+			b.push_back(a[i]);
+		}
+		for (i = k - 1; i >= 0; i--)
+		{
+			b.push_back(a[i]);
+		}
 	}
+	else
+	{
+		for (i = k; i >= 0; i--)
+		{
+			b.push_back(a[i]);
+		}
+		for (i = k + 1; i < a.size(); i++)
+		{
+			b.push_back(a[i]);
+		}
+	}
+	temp = b[0];
+	cout << temp;
+	for (i = 1; i < b.size(); i++)
+	{
+		cout << " -> " << b[i];
+		sum += abs(b[i] - temp);
+		temp = b[i];
+	}
+	cout << '\n';
+	cout << "Total head movements = " << sum << '\n';
+	cout << "Average head movement = " << (float)sum / n << '\n';
+	return;
+}
+//CSCAN
+void disk_cscan()
+{
+	int i, j, k, n, m, sum = 0, x, y, h;
+	cout << "Enter the size of disk\n";
+	cin >> m;
+	cout << "Enter number of requests\n";
+	cin >> n;
+	cout << "Enter the requests\n";
+	vector<int> a(n), b;
+	for (i = 0; i < n; i++)
+	{
+		cin >> a[i];
+	}
+	for (i = 0; i < n; i++)
+	{
+		if (a[i] > m)
+		{
+			cout << "Position not known " << a[i] << "\n";
+			return;
+		}
+	}
+	cout << "Enter the head position\n";
+	cin >> h;
+	int temp = h;
+	a.push_back(h);
+	a.push_back(m);
+	a.push_back(0);
+	sort(a.begin(), a.end());
+	for (i = 0; i < a.size(); i++)
+	{
+		if (h == a[i])
+			break;
+	}
+	k = i;
+	if (k < n / 2)
+	{
+		for (i = k; i < a.size(); i++)
+		{
+			b.push_back(a[i]);
+		}
+		for (i = 0; i <= k - 1; i++)
+		{
+			b.push_back(a[i]);
+		}
+	}
+	else
+	{
+		for (i = k; i >= 0; i--)
+		{
+			b.push_back(a[i]);
+		}
+		for (i = a.size() - 1; i >= k + 1; i--)
+		{
+			b.push_back(a[i]);
+		}
+	}
+	temp = b[0];
+	cout << temp;
+	for (i = 1; i < b.size(); i++)
+	{
+		cout << " -> " << b[i];
+		sum += abs(b[i] - temp);
+		temp = b[i];
+	}
+	cout << '\n';
+	cout << "Total head movements = " << sum << '\n';
+	cout << "Average head movement = " << (float)sum / n << '\n';
+	return;
 }
