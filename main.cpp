@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include "header.h"
 #define CYN "\e[0;96m"
+#define CYNB "\e[1;96m"
 #define reset "\e[0m"
 
 using namespace std;
@@ -12,7 +13,7 @@ void Scheduling()
     while (1)
     {
         cout << "-------------------------------\n";
-        cout << "Scheduling Algorithms\n";
+        printf(CYNB "Scheduling Algorithms\n" reset);
         cout << "\t1. FCFS\n";
         cout << "\t2. SJF\n";
         cout << "\t3. RoundRobin\n";
@@ -89,7 +90,10 @@ void Scheduling()
             break;
         }
         default:
-            printf("Wrong Input\n");
+        {
+            cout << "\033[1;31mWrong Input\033[0m\n";
+            break;
+        }
         }
         printf("\n\n");
     }
@@ -103,7 +107,7 @@ void PageReplacement()
     while (1)
     {
         cout << "-------------------------------\n";
-        cout << "Page Replacement Algorithms\n";
+        printf(CYNB "Page Replacement Algorithms\n" reset);
         cout << "\t1. FCFS\n";
         cout << "\t2. LRU\n";
         cout << "\t3. MRU\n";
@@ -148,7 +152,10 @@ void PageReplacement()
             break;
         }
         default:
-            printf("Wrong Input\n");
+        {
+            cout << "\033[1;31mWrong Input\033[0m\n";
+            break;
+        }
         }
         printf("\n\n");
     }
@@ -161,7 +168,7 @@ void DiskScheduling()
     while (1)
     {
         cout << "-------------------------------\n";
-        cout << "Disk Scheduling\n";
+        printf(CYNB "Disk Scheduling\n" reset);
         cout << "\t1. FIFO\n";
         cout << "\t2. SCAN\n";
         cout << "\t3. CSCAN\n";
@@ -171,7 +178,7 @@ void DiskScheduling()
         cout << "\t7. Exit Disk Scheduling\n";
         cout << "-------------------------------\n";
 
-        cout << "\nEnter your choice:\n";
+        cout << "\nEnter your choice: ";
         scanf("%d", &choice);
         cout << "\n";
 
@@ -217,159 +224,162 @@ void DiskScheduling()
             break;
         }
         default:
-            printf("Wrong Input\n");
+        {
+            cout << "\033[1;31mWrong Input\033[0m\n";
+            break;
+        }
         }
         printf("\n\n");
     }
 }
 
-void pagingFIFO()
-{
-    int vs;                 //virtual memory size
-    int ps;                 // physical memory size
-    int page;               // page size
-    int nf;                 // number of frames
-    int np;                 // number of pages
-    int pagetable[100];     //page table
-    int frames[2][100];     // frames
-    bool fs[100] = {false}; // checking if frame is empty or not
-    int loop = 1;           // loop variable
-    int pageno;             // page number holder
-    int offset;             // offset holder
-    float pagefaults = 0;   // fault counter
-    int flag = 0;           // flag variable
-    int i;                  //loop variable
-    int index = 0;          // storing index
-    float input = 0;        // input counter;
+// void pagingFIFO()
+// {
+//     int vs;                 //virtual memory size
+//     int ps;                 // physical memory size
+//     int page;               // page size
+//     int nf;                 // number of frames
+//     int np;                 // number of pages
+//     int pagetable[100];     //page table
+//     int frames[2][100];     // frames
+//     bool fs[100] = {false}; // checking if frame is empty or not
+//     int loop = 1;           // loop variable
+//     int pageno;             // page number holder
+//     int offset;             // offset holder
+//     float pagefaults = 0;   // fault counter
+//     int flag = 0;           // flag variable
+//     int i;                  //loop variable
+//     int index = 0;          // storing index
+//     float input = 0;        // input counter;
 
-    cout << "Enter the Virtual/Logical Memory Size: ";
-    cin >> vs;
-    cout << "Enter the Physical Memory Size: ";
-    cin >> ps;
-    cout << "Enter the Size of the page: ";
-    cin >> page;
+//     cout << "Enter the Virtual/Logical Memory Size: ";
+//     cin >> vs;
+//     cout << "Enter the Physical Memory Size: ";
+//     cin >> ps;
+//     cout << "Enter the Size of the page: ";
+//     cin >> page;
 
-    np = vs / page;
-    nf = ps / page;
+//     np = vs / page;
+//     nf = ps / page;
 
-    for (i = 0; i < np; i++)
-    {
-        pagetable[i] = -1;
-    }
+//     for (i = 0; i < np; i++)
+//     {
+//         pagetable[i] = -1;
+//     }
 
-    for (i = 0; i < nf; i++)
-    {
-        frames[0][i] = -1;
-    }
+//     for (i = 0; i < nf; i++)
+//     {
+//         frames[0][i] = -1;
+//     }
 
-    cout << "Number of pages in virtual memory:" << np << endl;
-    cout << "Number of pages in physical memory:" << nf << endl;
+//     cout << "Number of pages in virtual memory:" << np << endl;
+//     cout << "Number of pages in physical memory:" << nf << endl;
 
-    while (loop == 1)
-    {
-        cout << endl;
-        cout << "Press 1 to add a page into a frame" << endl;
-        cout << "Press 2 to stop" << endl;
-        cin >> loop;
-        if (loop != 1)
-            break;
+//     while (loop == 1)
+//     {
+//         cout << endl;
+//         cout << "Press 1 to add a page into a frame" << endl;
+//         cout << "Press 2 to stop" << endl;
+//         cin >> loop;
+//         if (loop != 1)
+//             break;
 
-        cout << "Enter the virtual address as told below:" << endl;
-        ;
-        cout << "Enter the Page number: " << endl;
-        cin >> pageno;
-        if (pageno > np)
-        {
-            cout << "Page can't exist due to Virtual Memory Constraint" << endl;
-            continue;
-        }
+//         cout << "Enter the virtual address as told below:" << endl;
+//         ;
+//         cout << "Enter the Page number: " << endl;
+//         cin >> pageno;
+//         if (pageno > np)
+//         {
+//             cout << "Page can't exist due to Virtual Memory Constraint" << endl;
+//             continue;
+//         }
 
-        cout << "Enter the Offset: ";
-        cin >> offset;
+//         cout << "Enter the Offset: ";
+//         cin >> offset;
 
-        input++;
-        for (i = 0; i < nf; i++)
-        {
-            if (frames[0][i] == pageno)
-            {
-                flag = 1;
-                break;
-            }
-        }
-        if (flag == 1)
-        {
-            cout << endl
-                 << "The Physical Address for the above virtual address is : " << endl;
-            cout << "Frame: " << i << endl;
-            cout << "Offset: " << offset;
-            flag = 0;
-        }
-        else
-        {
-            pagefaults = pagefaults + 1;
+//         input++;
+//         for (i = 0; i < nf; i++)
+//         {
+//             if (frames[0][i] == pageno)
+//             {
+//                 flag = 1;
+//                 break;
+//             }
+//         }
+//         if (flag == 1)
+//         {
+//             cout << endl
+//                  << "The Physical Address for the above virtual address is : " << endl;
+//             cout << "Frame: " << i << endl;
+//             cout << "Offset: " << offset;
+//             flag = 0;
+//         }
+//         else
+//         {
+//             pagefaults = pagefaults + 1;
 
-            if (fs[index] == false)
-            {
-                cout << "Page " << pageno << " is not present in the physical memory so page " << pageno << " is accomodated into frame " << index;
-                frames[0][index] = pageno;
-                frames[1][index] = offset;
-                fs[index] = true;
-                pagetable[pageno] = index;
+//             if (fs[index] == false)
+//             {
+//                 cout << "Page " << pageno << " is not present in the physical memory so page " << pageno << " is accomodated into frame " << index;
+//                 frames[0][index] = pageno;
+//                 frames[1][index] = offset;
+//                 fs[index] = true;
+//                 pagetable[pageno] = index;
 
-                index++;
-            }
+//                 index++;
+//             }
 
-            else
-            {
-                cout << "Page " << pageno << " is not present in the physical memory";
-                cout << "Page " << pageno << "is accomodated in frame" << index << " after removing page " << frames[0][index];
-                pagetable[frames[0][index]] = -1;
-                frames[0][index] = pageno;
-                frames[1][index] = offset;
-                pagetable[pageno] = index;
-                index++;
-            }
+//             else
+//             {
+//                 cout << "Page " << pageno << " is not present in the physical memory";
+//                 cout << "Page " << pageno << "is accomodated in frame" << index << " after removing page " << frames[0][index];
+//                 pagetable[frames[0][index]] = -1;
+//                 frames[0][index] = pageno;
+//                 frames[1][index] = offset;
+//                 pagetable[pageno] = index;
+//                 index++;
+//             }
 
-            if (index == nf)
-            {
-                index = 0;
-            }
-        }
-    }
+//             if (index == nf)
+//             {
+//                 index = 0;
+//             }
+//         }
+//     }
 
-    cout << endl
-         << "Total number of inputs:" << input;
-    cout << endl
-         << "Total number of page faults:" << pagefaults;
+//     cout << endl
+//          << "Total number of inputs:" << input;
+//     cout << endl
+//          << "Total number of page faults:" << pagefaults;
 
-    cout << endl
-         << "Page Fault Ratio is: " << pagefaults / input;
-    cout << endl;
-    cout << endl
-         << "Page Table";
-    cout << endl
-         << "Page number - Frame number" << endl;
-    for (i = 0; i < np; i++)
-    {
-        cout << i << " - " << pagetable[i] << endl;
-    }
+//     cout << endl
+//          << "Page Fault Ratio is: " << pagefaults / input;
+//     cout << endl;
+//     cout << endl
+//          << "Page Table";
+//     cout << endl
+//          << "Page number - Frame number" << endl;
+//     for (i = 0; i < np; i++)
+//     {
+//         cout << i << " - " << pagetable[i] << endl;
+//     }
 
-    cout << endl;
-    cout << endl
-         << "Memory Table";
-    cout << endl
-         << "Frame Number - Page Contained" << endl;
-    for (i = 0; i < nf; i++)
-    {
-        cout << i << " - " << frames[0][i] << endl;
-    }
-}
+//     cout << endl;
+//     cout << endl
+//          << "Memory Table";
+//     cout << endl
+//          << "Frame Number - Page Contained" << endl;
+//     for (i = 0; i < nf; i++)
+//     {
+//         cout << i << " - " << frames[0][i] << endl;
+//     }
+// }
 
 void MemoryManagement()
 {
     int a, b;
     cout << "-------------------------------\n";
-    cout << "Memory Management\n";
+    printf(CYNB "Memory Management\n" reset);
     cout << "\t1. Fixed Partition " << endl;
     cout << "\t2. Variable Partitiion " << endl;
     cout << "-------------------------------\n";
@@ -421,7 +431,7 @@ void MemoryManagement()
         }
         default:
         {
-            cout << "Wrong input " << endl;
+            cout << "\033[1;31mWrong Input\033[0m\n";
             break;
         }
         }
@@ -471,7 +481,7 @@ void MemoryManagement()
         }
         default:
         {
-            cout << "Wrong input " << endl;
+            cout << "\033[1;31mWrong Input\033[0m\n";
             break;
         }
         }
@@ -481,11 +491,11 @@ void MemoryManagement()
 void Synchronization()
 {
     int ch;
-    
+
     while (1)
     {
-    	cout << "\n-------------------------------\n";
-    	cout << "Synchronization\n";
+        cout << "\n-------------------------------\n";
+        printf(CYNB "Synchronization\n" reset);
         cout << "\t1. Producer Consumer Problem\n";
         cout << "\t2. Readers Writers Problem\n";
         cout << "\t3. Dining Philosophers Problem\n";
@@ -515,7 +525,8 @@ void Synchronization()
             return;
 
         default:
-            printf("Wrong Input\n");
+            cout << "\033[1;31mWrong Input\033[0m\n";
+            break;
         }
     }
 }
@@ -524,7 +535,7 @@ void Synchronization()
 void menu()
 {
     printf(CYN "\n\t-------------------------------\n" reset);
-    printf("\e[1;96m\t\tMAIN MENU\n");
+    cout << "\t\t\033[1;37mMain Menu\n\033[0m";
     printf(CYN "\t-------------------------------\n" reset);
     printf(CYN "\t1. Scheduling algorithms\n" reset);
     printf(CYN "\t2. Synchronization algoritms\n" reset);
@@ -582,7 +593,10 @@ void result(int choice)
         break;
     }
     default:
-        printf("Wrong Input\n");
+    {
+        cout << "\033[1;31mWrong Input\033[0m\n";
+        break;
+    }
     }
 }
 
