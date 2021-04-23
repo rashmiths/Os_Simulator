@@ -18,7 +18,7 @@ void Scheduling()
         cout << "\t1. FCFS\n";
         cout << "\t2. SJF\n";
         cout << "\t3. RoundRobin\n";
-        cout << "\t4. Priority\n";
+        cout << "\t4. Priority_Pre-emptive\n";
         cout << "\t5. SRTF\n";
         cout << "\t6. LJF\n";
         cout << "\t7. LRTF\n";
@@ -53,8 +53,8 @@ void Scheduling()
         }
         case 4:
         {
-            cout << "Priority\n";
-            //Priority();
+            cout << "Priority_Pre-emptive\n";
+            priority_premptive();
             break;
         }
         case 5:
@@ -109,8 +109,8 @@ void PageReplacement()
         cout << "\t1. FCFS\n";
         cout << "\t2. LRU\n";
         cout << "\t3. MRU\n";
-        // cout << "\t4. Optimal\n";
-        cout << "\t4. Exit Page Replacement\n";
+        cout << "\t4. Optimal\n";
+        cout << "\t5. Exit Page Replacement\n";
         cout << "-------------------------------\n";
 
         cout << "\nEnter your choice: ";
@@ -135,12 +135,12 @@ void PageReplacement()
             mru_pra();
             break;
         }
-        // case 4:
-        // {
-        //     optimal_pra();
-        //     break;
-        // }
         case 4:
+        {
+            optimal_pra();
+            break;
+        }
+        case 5:
         {
             cout << "______________________________________________________________\n\n";
             cout << "Exit Page Replacement........\n";
@@ -159,7 +159,6 @@ void DiskScheduling()
 {
 
     int choice;
-    
 
     while (1)
     {
@@ -507,7 +506,7 @@ void Synchronization()
             reader_writer();
             break;
 
-            case 3:
+        case 3:
             dining_philosopher();
 
         case 4:
