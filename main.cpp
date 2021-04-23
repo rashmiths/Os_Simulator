@@ -1,10 +1,6 @@
 #include <bits/stdc++.h>
-// #include "scheduling.cpp"
-// #include "page_replacement.cpp"
-// #include "disk_scheduling.cpp"
 #include "header.h"
-//#include <pthread.h>
-//#include <semaphore.h>
+
 using namespace std;
 
 void Scheduling()
@@ -484,11 +480,12 @@ void MemoryManagement()
 void Synchronization()
 {
     int ch;
-    cout << "\n-------------------------------\n";
-    cout << "Synchronization\n";
-    cout << "-------------------------------\n";
+    
     while (1)
     {
+    	cout << "\n-------------------------------\n";
+    	cout << "Synchronization\n";
+    	cout << "-------------------------------\n";
         cout << "1. Producer Consumer Problem\n";
         cout << "2. Readers Writers Problem\n";
         cout << "3. Dining Philosophers Problem\n";
@@ -509,9 +506,12 @@ void Synchronization()
 
             case 3:
             dining_philosopher();
+            break;
 
         case 4:
-            cout << "Exiting Synchronization...\n";
+            cout << "______________________________________________________________\n";
+            cout << "\nExit Synchronization........\n";
+            cout << "______________________________________________________________\n\n";
             return;
 
         default:
@@ -523,17 +523,17 @@ void Synchronization()
 // Function to display the menu
 void menu()
 {
-    cout << "\n-------------------------------\n";
-    cout << "\tMain Menu\n";
-    cout << "-------------------------------\n";
-    cout << "1. Scheduling algorithms\n";
-    cout << "2. Synchronization algoritms\n";
-    cout << "3. Bankers algorithm\n";
-    cout << "4. Memory Management\n";
-    cout << "5. Page Replacement algorihm\n";
-    cout << "6. Disc Scheduling Algorithm\n";
-    cout << "7. exit\n";
-    cout << "-------------------------------\n";
+    cout << "\n\t-------------------------------\n";
+    cout << "\t\tMain Menu\n";
+    cout << "-\t------------------------------\n";
+    cout << "\t1. Scheduling algorithms\n";
+    cout << "\t2. Synchronization algoritms\n";
+    cout << "\t3. Bankers algorithm\n";
+    cout << "\t4. Memory Management\n";
+    cout << "\t5. Page Replacement algorihm\n";
+    cout << "\t6. Disc Scheduling Algorithm\n";
+    cout << "\t7. exit\n";
+    cout << "\t-------------------------------\n";
 }
 
 // Function to calculate and display the result
