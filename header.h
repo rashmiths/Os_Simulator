@@ -26,3 +26,4 @@ void BankersAlgo(void);
 void reader_writer(void);
 void producer_consumer(void);
 void dining_philosopher(void);
+void sleeping_barber(void);
