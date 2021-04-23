@@ -484,11 +484,10 @@ void Synchronization()
     {
     	cout << "\n-------------------------------\n";
     	cout << "Synchronization\n";
-    	cout << "-------------------------------\n";
-        cout << "1. Producer Consumer Problem\n";
-        cout << "2. Readers Writers Problem\n";
-        cout << "3. Dining Philosophers Problem\n";
-        cout << "4. Exit Synchronization\n";
+        cout << "\t1. Producer Consumer Problem\n";
+        cout << "\t2. Readers Writers Problem\n";
+        cout << "\t3. Dining Philosophers Problem\n";
+        cout << "\t4. Exit Synchronization\n";
         cout << "-------------------------------\n";
         cout << "Enter your choice: ";
         cin >> ch;
