@@ -205,62 +205,84 @@ void sjf()
 
 void fcfs()
 {
-    int size;
-    cout << "Enter the number of processes: ";
-    cin >> size;
 
-    int at[size]; //arrival time of each process
-    int bt[size]; //burst time of each process
-
-    for (int i = 0; i < size; i++)
+    cout << "\nEnter the number of processes: ";
+    int n, i;
+    cin >> n;
+    while (n < 0)
     {
-        cout << "For process " << i + 1 << ":" << endl;
-        cout << "Arrival time: ";
-        cin >> at[i];
-        cout << "Burst time: ";
-        cin >> bt[i];
+        cout << "Wrong input, try again"
+             << "\nEnter number of processes: ";
+        cin >> n;
     }
-    int wt[size];  //waiting time of each process
-    int tat[size]; //turn around time for each process
-    int total_TAT = 0, total_WT = 0;
+    vector<tuple<int, int, int, int, int>> times(n); // {at, bt, ct, tat, wt}
 
-    //finding waiting time
-    //Exec stores execution time for each process
-    int Exec[size];
-    //Execution and waiting time for process 0 is 0
-    Exec[0] = 0;
-    wt[0] = 0;
-    for (int i = 1; i < size; i++)
+    cout << "Process Details" << endl
+         << endl;
+    for (i = 0; i < n; i++)
     {
-        Exec[i] = Exec[i - 1] + bt[i - 1];
-        // wt is Execution time - arrival time clearly
-        wt[i] = Exec[i] - at[i];
-        if (wt[i] < 0)
+        int t;
+        cout << "Arrival Time P" << i << ": ";
+        cin >> t;
+        while (t < 0)
         {
-            wt[i] = 0;
+            cout << "Wrong input, try again\nArrival Time P" << i << ": ";
+            cin >> t;
         }
-    }
-
-    //tat = wt + bt for each process clearly
-    for (int i = 0; i < size; i++)
-    {
-        tat[i] = bt[i] + wt[i];
-    }
-
-    cout << endl;
-    for (int i = 0; i < size; i++)
-    {
-        // calculating total for the average
-        total_TAT += tat[i];
-        total_WT += wt[i];
-        cout << "Process: " << i + 1 << " ";
-        cout << "Waiting Time: " << wt[i] << " ";
-        cout << "Turn Around Time: " << tat[i] << endl;
+        get<0>(times[i]) = t; // Arrival time
+        cout << "Burst Time   P" << i << ": ";
+        cin >> t;
+        while (t < 0)
+        {
+            cout << "Wrong input, try again\nBurst Time   P" << i << ": ";
+            cin >> t;
+        }
         cout << endl;
+        get<1>(times[i]) = t; // Burst time
+        get<2>(times[i]) = 0; // Completion time
+        get<3>(times[i]) = 0; // Turn around time
+        get<4>(times[i]) = 0; // Waiting time
     }
-    //printing averages
-    cout << "Average Waiting Time : " << (double)total_WT / size << endl;
-    cout << "Average Turn Around Time : " << (double)total_TAT / size << endl;
+
+    sort(times.begin(), times.end()); // sorting according to Arrival time
+
+    int ti = 0; // current time
+
+    for (i = 0; i < n; i++)
+    {
+
+        if (ti < get<0>(times[i]))
+            ti = get<0>(times[i]);
+
+        get<2>(times[i]) = ti + get<1>(times[i]);
+        ti += get<1>(times[i]);
+
+        get<3>(times[i]) = get<2>(times[i]) - get<0>(times[i]);
+        get<4>(times[i]) = get<3>(times[i]) - get<1>(times[i]);
+    }
+
+    double TAT = 0, TWT = 0;
+
+    for (i = 0; i < n; i++)
+    {
+        TAT += get<3>(times[i]);
+        TWT += get<4>(times[i]);
+    }
+
+    cout << "\n"
+            "Process No.\tArrival Time\tBurst Time\tCompletion Time\t\tTurn-around Time\tWaiting Time\n";
+    for (i = 0; i < n; i++)
+    {
+        cout << i + 1 << "\t\t" << get<0>(times[i]) << "\t\t" << get<1>(times[i]) << "\t\t" << get<2>(times[i]) << "\t\t\t" << get<3>(times[i]) << "\t\t\t" << get<4>(times[i]) << "\n";
+    }
+
+    TAT = TAT / (1.0 * n); // Average TAT
+    TWT = TWT / (1.0 * n); // Average WT
+
+    cout << "\nAverage Turn around time is: " << TAT << "\n";
+    cout << "Average Waiting time is    : " << TWT << "\n";
+
+    return;
 }
 
 void LJF()
