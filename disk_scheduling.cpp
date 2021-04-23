@@ -159,6 +159,7 @@ void disk_scan()
 	int i, j, k, n, m, sum = 0, x, y, h;
 	cout << "Enter the size of disk\n";
 	cin >> m;
+	m = m - 1;
 	cout << "Enter number of requests\n";
 	cin >> n;
 	cout << "Enter the requests\n";
@@ -179,7 +180,7 @@ void disk_scan()
 	cin >> h;
 	int temp = h;
 	a.push_back(h);
-	a.push_back(m);
+	// a.push_back(m);
 	a.push_back(0);
 	sort(a.begin(), a.end());
 	for (i = 0; i < a.size(); i++)
@@ -229,6 +230,7 @@ void disk_cscan()
 	int i, j, k, n, m, sum = 0, x, y, h;
 	cout << "Enter the size of disk\n";
 	cin >> m;
+	m = m-1;
 	cout << "Enter number of requests\n";
 	cin >> n;
 	cout << "Enter the requests\n";
