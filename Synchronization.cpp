@@ -219,83 +219,91 @@ void dining_philosopher()
     sem_destroy(&allowed);
 }
 
+
+sem_t barberBusy, waitingRoom, wakeUpCall;
+int freeWRSeats, haircuts;
+
+
+void *barber(void *params)
+{
+    haircuts = *(int *) params;
+    while(true)
+    {
+        sem_wait(&wakeUpCall); //waccept a wake up call
+        sem_wait(&waitingRoom); // accept a customer so one seat frees up in the waiting room
+        freeWRSeats++;
+        sem_post(&barberBusy); //barber cuts hair
+        haircuts--;
+        printf(GRN "Barber is cutting hair\n" reset);
+        sleep(1);
+        sem_post(&waitingRoom); // realease mutex 
+        printf("Number of free waiting room seats = %d\n", freeWRSeats);
+        if(haircuts<=0)
+            break;
+    }
+    printf("\nBarber goes back to sleep\n\n");
+
+    return NULL;
+
+}
+
+void *customer(void * params)
+{   
+    sem_wait(&waitingRoom);
+    if(freeWRSeats>0)
+    {
+        freeWRSeats--;
+        printf(YEL "Customer %d takes a seat in the waiting room\n" reset, (*(int *)params));
+            sem_post(&wakeUpCall); // send a wake upcall if the barber is asleep
+            sleep(1);
+            sem_post(&waitingRoom);
+            sem_wait(&barberBusy); //wait if the barber is already cutting hair
+            printf(GRN "Customer %d is getting a haircut\n" reset,*(int *)params );
+    }
+    else
+    {
+        haircuts--;
+        sem_post(&waitingRoom);
+        printf(RED "Customer %d couldn't get a haircut \nNumber of free waiting room seats = %d\n" reset, *(int *)params, freeWRSeats );
+    }
+
+    return NULL;
+
+}
+
+
 void sleeping_barber()
 {
-    int barber = 0, customers, occupied = 0;
+    int i, n_customers, n;
+    printf("\nEnter number of waiting room seats: ");
+    scanf("%d",&n);
 
-    cout << "Enter the number of customers : ";
-    cin >> customers;
+    sem_init(&barberBusy,0,0); //barber is initially asleep
+    sem_init(&waitingRoom,0,1); //mutex for waiting room seats (freeWRSeats)
+    sem_init(&wakeUpCall,0,0); // number of wake up calls issued by customers
+    freeWRSeats=n;
 
-    int chairs;
-    cout << "Enter the number of chairs : ";
-    cin >> chairs;
+    printf("Enter number of customers: ");
+    cin >> n_customers;
+    pthread_t customersThread[n_customers];
+    pthread_t barberThread;
+    pthread_create(&barberThread, NULL, barber, (void *)&n_customers);  
 
-    pair<int, int> arrival[customers];
-    int burst[customers];
-
-    for (int i = 0; i < customers; i++)
+    int index[n_customers];
+    cout << endl;
+    for(i=0; i<n_customers; i++)
     {
-        cout << "Enter the arrival time of customer" << i << " : ";
-        cin >> arrival[i].first;
-
-        cout << "Enter the burst time( time taken for haircut) of customer" << i << " : ";
-        cin >> burst[i];
-
-        arrival[i].second = i;
+        index[i] = i+1;
+        pthread_create(&customersThread[i], NULL, customer, (void *)&index[i]);
     }
 
-    sort(arrival, arrival + customers);
+    pthread_join(barberThread, NULL);
 
-    set<tuple<int, int, int>> event;
+    for(i=0; i<n_customers; i++)
+        pthread_join(customersThread[i], NULL);
+    
+    sem_destroy(&barberBusy);
+    sem_destroy(&waitingRoom);
+    sem_destroy(&wakeUpCall);
 
-    for (auto it : arrival)
-        event.insert(make_tuple(it.first, 1, it.second));
-
-    queue<int> q;
-
-    cout << "Barber arrives to work and starts sleeping" << endl;
-    while (!event.empty())
-    {
-        auto it = (*event.begin());
-        event.erase(event.begin());
-
-        if (get<1>(it) == 1)
-        {
-            if (occupied == chairs && barber == 1)
-            {
-                cout << "At time " << get<0>(it) << ", customer" << get<2>(it) << " leaves because there are no empty chairs" << endl;
-            }
-            else if (barber == 0)
-            {
-                cout << "At time " << get<0>(it) << ", customer" << get<2>(it) << " wakes barber and starts haircut" << endl;
-                barber = 1;
-                event.insert(make_tuple(get<0>(it) + burst[get<2>(it)], 0, get<2>(it)));
-            }
-            else if (occupied < chairs && barber == 1)
-            {
-                cout << "At time " << get<0>(it) << ", customer" << get<2>(it) << " occupies an empty chair" << endl;
-                occupied++;
-                q.push(get<2>(it));
-            }
-        }
-        else
-        {
-            if (q.empty())
-            {
-                cout << "At time " << get<0>(it) << ", customer" << get<2>(it) << " finishes haircut and ";
-                cout << "Barber starts sleeping" << endl;
-                barber = 0;
-            }
-            else
-            {
-                occupied--;
-                auto top = q.front();
-                q.pop();
-
-                cout << "At time " << get<0>(it) << ", customer" << get<2>(it) << " finishes haircut and ";
-                cout << " customer" << top << " starts haircut" << endl;
-                event.insert(make_tuple(get<0>(it) + burst[top], 0, top));
-            }
-        }
-    }
 }

@@ -5,9 +5,9 @@ void MFTfirstfit()
 {
     int tot_size, n;
     int cnt_prt = 0; // variable to hold the number of partitions alloted
-    cout << "Enter the total size: \n";
+    cout << "\nEnter the total size: ";
     cin >> tot_size;
-    cout << "Enter the total number of partitions: \n";
+    cout << "\nEnter the total number of partitions: ";
     cin >> n;
 
     int space = tot_size; // variable for storing remaining space
@@ -16,7 +16,7 @@ void MFTfirstfit()
     int part[n + 1];
     for (int i = 1; i <= n; i++)
     {
-        cout << "Enter the size of the partition " << i << ": ";
+        cout << "\nEnter the size of the partition " << i << ": ";
         cin >> part[i];
 
         //if the partition size is less than remaining space
@@ -30,7 +30,7 @@ void MFTfirstfit()
         //otherwise partition cannot be alloted due to less remaining space
         else
         {
-            cout << "Partition " << i << " cannot be alloted space because only " << space << "(units) space is remaining \n";
+            cout << "\nPartition " << i << " cannot be alloted space because only " << space << "(units) space is remaining \n";
             part[i] = 0;
         }
     }
@@ -49,7 +49,7 @@ void MFTfirstfit()
     int empty_space = tot_size;
     while (ch != 3)
     {
-        cout << "1.Insert \n";
+        cout << "\n1.Insert \n";
         cout << "2.Delete \n";
         cout << "3.Stop \n";
 
@@ -169,13 +169,13 @@ void MFTbestfit()
 {
     int totalsize, n, m, i, j, unusedspace, pid, mint;
     int partitioncnt = 0, a, sz, l;
-    cout << "Enter the total size: ";
+    cout << "\nEnter the total size: ";
     cin >> totalsize;
     unusedspace = totalsize;
 
     int spaceleft = 0, tot_frag = 0;
 
-    cout << "Enter the number of partitions: ";
+    cout << "\nEnter the number of partitions: ";
     cin >> n;
 
     map<int, int> proc;
@@ -210,10 +210,11 @@ void MFTbestfit()
     int dpno;
     while (1)
     {
-        cout << "Enter the operation you want to perform :" << endl;
-        cout << "1: Insert " << endl;
+        
+        cout << "\n1: Insert " << endl;
         cout << "2: Delete " << endl;
         cout << "3: Stop " << endl;
+        cout << "Enter the operation you want to perform :" ;
         cin >> a;
         switch (a)
         {
@@ -286,7 +287,7 @@ void MFTbestfit()
 
         case 2:
 
-            cout << "Enter the processid which you want to delete :" << endl;
+            cout << "\nEnter the processid which you want to delete :" << endl;
             cin >> dpno;
 
             for (i = 0; i < n; i++)
@@ -328,13 +329,13 @@ void MFTworstfit()
 {
     int totalsize, n, m, i, j, unusedspace, pid, maxt;
     int partitioncnt = 0, a, sz, l;
-    cout << "Enter the total size: ";
+    cout << "\nEnter the total size: ";
     cin >> totalsize;
     unusedspace = totalsize;
 
     int spaceleft = 0, tot_frag = 0;
 
-    cout << "Enter the number of partitions: ";
+    cout << "\nEnter the number of partitions: ";
     cin >> n;
 
     map<int, int> proc;
@@ -369,7 +370,7 @@ void MFTworstfit()
     int dpno;
     while (1)
     {
-        cout << "Enter the operation you want to perform :" << endl;
+        cout << "\nEnter the operation you want to perform :" << endl;
         cout << "1: Insert " << endl;
         cout << "2: Delete " << endl;
         cout << "3: Stop " << endl;
@@ -377,7 +378,7 @@ void MFTworstfit()
         switch (a)
         {
         case 1:
-            cout << "Enter the process no you want to insert : ";
+            cout << "\nEnter the process no you want to insert : ";
             cin >> pid;
             cout << "Enter the size of the process you want to insert :";
             cin >> sz;
@@ -445,7 +446,7 @@ void MFTworstfit()
 
         case 2:
 
-            cout << "Enter the processid which you want to delete :" << endl;
+            cout << "\nEnter the processid which you want to delete :" << endl;
             cin >> dpno;
 
             for (i = 0; i < n; i++)
@@ -494,7 +495,7 @@ void MVTfirstfit()
     int totsize;
     int i, j;
 
-    cout << "Enter the total size ";
+    cout << "\nEnter the total size ";
     cin >> totsize;
 
     int a, spaceleft = totsize;
@@ -504,10 +505,11 @@ void MVTfirstfit()
     vector<partition> v = {{-1, totsize}};
     while (1)
     {
-        cout << "Enter the operation you want to perfrom: " << endl;
-        cout << "1.Insert Process" << endl;
+        
+        cout << "\n1.Insert Process" << endl;
         cout << "2.Delete Process" << endl;
         cout << "0.Exit" << endl;
+        cout << "Enter the operation you want to perfrom: " ;
 
         int pid, sz, idx;
 
@@ -627,7 +629,7 @@ void MVTbestfit()
     int totsize;
     int i, j;
 
-    cout << "Enter the total size ";
+    cout << "\nEnter the total size ";
     cin >> totsize;
 
     int a, spaceleft = totsize;
@@ -638,10 +640,11 @@ void MVTbestfit()
 
     while (1)
     {
-        cout << "Enter the operation you want to perfrom: " << endl;
-        cout << "1.Insert Process" << endl;
+        
+        cout << "\n1.Insert Process" << endl;
         cout << "2.Delete Process" << endl;
         cout << "0.Exit" << endl;
+        cout << "Enter the operation you want to perfrom: ";
 
         int pid, sz, idx, minsize;
 
@@ -757,7 +760,7 @@ void MVTworstfit()
     int totsize;
     int i, j;
 
-    cout << "Enter the total size ";
+    cout << "\nEnter the total size ";
     cin >> totsize;
 
     int a, spaceleft = totsize;
@@ -768,10 +771,11 @@ void MVTworstfit()
 
     while (1)
     {
-        cout << "Enter the operation you want to perfrom: " << endl;
-        cout << "1.Insert Process" << endl;
+        
+        cout << "\n1.Insert Process" << endl;
         cout << "2.Delete Process" << endl;
         cout << "0.Exit" << endl;
+        cout << "Enter the operation you want to perfrom: " ;
 
         int pid, sz, idx, maxsize;
 
@@ -827,7 +831,7 @@ void MVTworstfit()
             break;
 
         case 2:
-            cout << "Enter the processid which you want to delete :";
+            cout << "\nEnter the processid which you want to delete :";
             cin >> pid;
 
             for (i = 0; i < (int)v.size(); i++)
