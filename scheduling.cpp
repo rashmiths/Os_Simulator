@@ -420,10 +420,10 @@ void LJF()
     cout << "\nProcess No.\tArrival Time\tBurst Time\tCompletion Time\t\tTurn-around Time\tWaiting Time\n";
     for (i = 0; i < n; i++)
     {
-        cout << arr[i].pid << "\t" << arr[i].at << "\t" << arr[i].bt << "\t" << arr[i].ct << "\t" << arr[i].tat << "\t" << arr[i].wt << endl;
+        cout << arr[i].pid << "\t\t" << arr[i].at << "\t\t" << arr[i].bt << "\t\t" << arr[i].ct << "\t\t\t" << arr[i].tat << "\t\t\t" << arr[i].wt << endl;
     }
 
-    cout << "The average turnaround time is: " << float(sumtat) / float(n) << endl;
+    cout << "\nThe average turnaround time is: " << float(sumtat) / float(n) << endl;
     cout << "The average waiting time is: " << float(sumwt) / float(n) << endl;
 }
 //
@@ -571,7 +571,7 @@ void LRTF()
     cout << "\nProcess No.\tArrival Time\tBurst Time\tCompletion Time\t\tTurn-around Time\tWaiting Time\n";
     for (i = 0; i < n; i++)
     {
-        cout << arr[i].pid << "\t\t" << arr[i].at << "\t\t" << arr[i].bt << "\t\t" << arr[i].ct << "\t\t\t\t" << arr[i].tat << "\t\t" << arr[i].wt << endl;
+        cout << "\t" << arr[i].pid << "\t\t" << arr[i].at << "\t\t" << arr[i].bt << "\t\t" << arr[i].ct << "\t\t\t\t" << arr[i].tat << "\t\t" << arr[i].wt << endl;
     }
 
     cout << "The average turnaround time is: " << float(sumtat) / float(n) << endl;
@@ -751,14 +751,12 @@ void disp(int n)
         cout << 'P' << a[i].pname << "\t\t";
         cout << a[i].atime << "\t\t";
         cout << a[i].btime << "\t\t";
-        cout << tArray[i + 1] << "\t\t";
-        cout << tArray[i] - a[i].atime + a[i].btime << "\t\t";
+
+        cout << tArray[i + 1] << "\t\t\t ";
+        cout << tArray[i] - a[i].atime + a[i].btime << "\t\t\t" << a[i].wtime << endl;
         averageTAT += tArray[i] - a[i].atime + a[i].btime;
-        cout << a[i].wtime << "\t\t";
         averageWaitingTime += tArray[i] - a[i].atime;
-        cout << tArray[i] - a[i].atime << "\t\t";
         averageResponseTime += tArray[i] - a[i].atime;
-        cout << "\n";
     }
     cout << "\n";
     cout << "\n";
@@ -904,11 +902,9 @@ void srtf()
     cout << "\nProcess No.\tArrival Time\tStart Time\tBurst Time\tCompletion Time\t\tTurn-around Time\tWaiting Time\tResponse Time\n";
     for (int i = 0; i < n; i++)
     {
-        cout << p[i].pid << "\t\t" << p[i].arrival_time << "\t\t" << p[i].burst_time << "\t\t" << p[i].start_time << "\t\t" << p[i].completion_time << "\t\t\t\t" << p[i].turnaround_time << "\t\t" << p[i].waiting_time << "\t\t" << p[i].response_time << "\t\t"
-             << "\n"
-             << endl;
+        cout << p[i].pid << "\t\t" << p[i].arrival_time << "\t\t" << p[i].start_time << "\t\t" << p[i].burst_time << "\t\t" << p[i].completion_time << "\t\t\t" << p[i].turnaround_time << "\t\t\t" << p[i].waiting_time << "\t\t" << p[i].response_time << "\n";
     }
-    cout << "Average Turnaround Time = " << avg_turnaround_time << endl;
+    cout << "\nAverage Turnaround Time = " << avg_turnaround_time << endl;
     cout << "Average Waiting Time = " << avg_waiting_time << endl;
     cout << "Average Response Time = " << avg_response_time << endl;
 }
