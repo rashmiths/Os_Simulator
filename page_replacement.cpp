@@ -1,4 +1,8 @@
 #include <bits/stdc++.h>
+#define GRN "\e[0;92m"
+#define YEL "\e[0;93m"
+#define RED "\e[0;91m"
+#define reset "\e[0m"
 
 using namespace std;
 
@@ -42,14 +46,14 @@ int fifo_pra()
             {
                 if (pg == frame[j])
                 {
-                    cout << "Page " << pg << " is already present in F" << j << "\n\n";
+                    printf(GRN "Page %d is already present in F%d\n\n" reset, pg, j);
                     flag = 1;
                     break;
                 }
             }
             if (flag)
                 continue;
-            cout << "Page " << pg << " has been accomodated in F" << i - 1 << "\n\n";
+            printf(RED "Page %d has been accomodated in F%d \n\n" reset, pg, i-1);
             page_faults++;
             frame.push_back(pg);
             continue;
@@ -60,7 +64,7 @@ int fifo_pra()
         {
             if (pg == frame[k])
             {
-                cout << "Page " << pg << " is already present in F" << k << "\n\n";
+                printf(GRN "Page %d is already present in F%d\n\n" reset, pg, k);
                 flag = 1;
                 break;
             }
@@ -68,7 +72,7 @@ int fifo_pra()
         if (flag == 0)
         {
             x = frame[update_index];
-            cout << "Page " << pg << " has been accomodated into F" << update_index << " replacing Page " << x << "\n\n";
+            printf(RED "Page %d has been accomodated into F%d replacing Page %d \n\n" reset, pg, update_index, x);
             frame[update_index] = pg;
             page_faults++;
 
@@ -122,14 +126,14 @@ int lru_pra()
             {
                 if (pg == frame[j])
                 {
-                    cout << "Page " << pg << " is already present in F" << j << "\n\n";
+                    printf(GRN "Page %d is already present in F%d\n\n" reset, pg, j);
                     flag = 1;
                     break;
                 }
             }
             if (flag)
                 continue;
-            cout << "Page " << pg << " has been accomodated in F" << i - 1 << "\n\n";
+            printf(RED "Page %d has been accomodated in F%d\n\n" reset, pg, i-1);
             page_faults++;
             input.push_back(pg);
             frame.push_back(pg);
@@ -142,7 +146,7 @@ int lru_pra()
             if (pg == frame[k])
             {
 
-                cout << "Page " << pg << " is already present in F" << k << "\n\n";
+                printf(GRN "Page %d is already present in F%d \n\n" reset, pg, k);
                 for (auto j = input.begin(); j != input.end(); j++)
                 {
                     if (pg == *j)
@@ -169,7 +173,7 @@ int lru_pra()
                 }
             }
             frame[k] = pg;
-            cout << "Page " << pg << " has been accomodated in F" << k << " replacing Page " << lru << "\n\n";
+            printf(RED "Page %d has been accomodated in F%d replacing Page %d \n\n" reset, pg, k, lru);
 
             input.erase(input.begin());
             input.push_back(pg);
@@ -220,14 +224,14 @@ int mru_pra()
             {
                 if (pg == frame[j])
                 {
-                    cout << "Page " << pg << " is already present in F" << j << "\n\n";
+                    printf(GRN "Page %d is already present in F%d\n\n" reset, pg, j);
                     flag = 1;
                     break;
                 }
             }
             if (flag)
                 continue;
-            cout << "Page " << pg << " has been accomodated in F" << i - 1 << "\n\n";
+            printf(RED "Page %d has been accomodated in F%d \n\n" reset, pg, i-1);
             page_faults++;
             input.push_back(pg);
             frame.push_back(pg);
@@ -240,7 +244,7 @@ int mru_pra()
             if (pg == frame[k])
             {
 
-                cout << "Page " << pg << " is already present in F" << k << "\n\n";
+                printf(GRN "Page %d is already present in F%d \n\n" reset,pg, k);
                 for (auto j = input.begin(); j != input.end(); j++)
                 {
                     if (pg == *j)
@@ -267,7 +271,7 @@ int mru_pra()
                 }
             }
             frame[k] = pg;
-            cout << "Page " << pg << " has been accomodated in F" << k << " replacing Page " << lru << "\n\n";
+            printf( RED "Page %d has been accomodated in F%d replacing Page %d \n\n" reset, pg,k, lru);
 
             input.erase(input.begin());
             input.push_back(pg);
@@ -283,7 +287,12 @@ bool search(int key, vector<int> &fr)
 {
     for (int i = 0; i < fr.size(); i++)
         if (fr[i] == key)
+        {
+            printf(GRN "Page %d is already present in F%d \n\n" reset, key, i);
+
             return true;
+        }
+
     return false;
 }
 
@@ -330,6 +339,7 @@ void optimalPage(int pg[], int pn, int fn)
 
     // Traverse through page reference array
     // and check for miss and hit.
+    cout << endl;
     int hit = 0;
     for (int i = 0; i < pn; i++)
     {
@@ -345,17 +355,24 @@ void optimalPage(int pg[], int pn, int fn)
 
         // If there is space available in frames.
         if (fr.size() < fn)
+        {
+
             fr.push_back(pg[i]);
+            printf(RED "Page %d has been accomodated in F%d \n\n" reset, pg[i], (int)(fr.size()-1));
+        }
 
         // Find the page to be replaced.
         else
         {
             int j = predict(pg, fr, pn, i + 1);
+
+            printf(RED "Page %d has been accomodated in F%d  replacing Page %d \n\n" reset, pg[i], j, fr[j]);
             fr[j] = pg[i];
         }
     }
-    cout << "No. of hits = " << hit << endl;
-    cout << "No. of misses = " << pn - hit << endl;
+    // cout << "No. of hits = " << hit << endl;
+    // cout << "No. of misses = " << pn - hit << endl;
+    cout << "\nTotal Number of Page Faults: " << pn - hit << "\nPage Faults Ratio = " << (float(pn - hit) / pn) << "\n\n";
 }
 
 int optimal_pra()
@@ -365,16 +382,16 @@ int optimal_pra()
     int fn;
     cout << "Page Replacement - Optimal\n\nEnter the number of frames: ";
     cin >> fn;
-    cout << "Enter the number of pages to get";
+    cout << "Enter the number of pages to get : ";
     cin >> n;
-    cout << "Enter the list of pages to get";
+    cout << "Enter the list of pages to get : ";
     for (i = 0; i < n; i++)
     {
         scanf("%d", &pg[i]);
     }
 
-    int pn = sizeof(pg) / sizeof(pg[0]);
+    //int pn = sizeof(pg) / sizeof(pg[0]);
 
-    optimalPage(pg, pn, fn);
+    optimalPage(pg, n, fn);
     return 0;
 }
