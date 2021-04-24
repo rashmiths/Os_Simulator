@@ -753,7 +753,7 @@ void disp(int n)
         cout << a[i].btime << "\t\t";
 
         cout << tArray[i + 1] << "\t\t\t ";
-        cout << tArray[i] - a[i].atime + a[i].btime << "\t\t\t" << a[i].wtime; << endl;
+        cout << tArray[i] - a[i].atime + a[i].btime << "\t\t\t" << a[i].wtime << endl;
         averageTAT += tArray[i] - a[i].atime + a[i].btime;
         averageWaitingTime += tArray[i] - a[i].atime;
         averageResponseTime += tArray[i] - a[i].atime;
